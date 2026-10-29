@@ -1,729 +1,346 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f5ff">
-  <title>MAIL VOTE – SH TEAM</title>
-
-  <style>
-    :root {
-      --bg: #f8f5ff;
-      --card: #fff;
-      --primary: #8064d8;
-      --primary-dark: #684bc3;
-      --pink: #f6eaff;
-      --text: #29243a;
-      --muted: #777187;
-      --border: #e9e2f5;
-      --shadow: 0 14px 40px rgba(76, 52, 126, .09);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      padding: 24px 16px;
-      display: grid;
-      place-items: center;
-      background:
-        radial-gradient(ellipse at top left, #f0e7ff, transparent 42%),
-        radial-gradient(ellipse at bottom right, #ffeaf4, transparent 38%),
-        var(--bg);
-      color: var(--text);
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    button, input { font: inherit; }
-
-    .shell { width: 100%; max-width: 460px; margin: auto; }
-
-    .brand { margin-bottom: 22px; text-align: center; }
-
-    .brand-mark {
-      width: 58px;
-      height: 58px;
-      margin: 0 auto 14px;
-      display: grid;
-      place-items: center;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #9b83eb, #d4a8f4);
-      box-shadow: 0 8px 22px rgba(128, 100, 216, .22);
-      color: white;
-      font-size: 26px;
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: clamp(23px, 5vw, 29px);
-      font-weight: 850;
-      letter-spacing: -.8px;
-    }
-
-    .brand p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .card {
-      padding: 25px;
-      border: 1px solid rgba(233, 226, 245, .9);
-      border-radius: 24px;
-      background: rgba(255, 255, 255, .95);
-      box-shadow: var(--shadow);
-    }
-
-    .card h2 { margin: 0; font-size: 20px; letter-spacing: -.3px; }
-
-    .subheading {
-      margin: 8px 0 22px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .field { margin-bottom: 16px; }
-
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .field input {
-      width: 100%;
-      min-height: 48px;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      outline: none;
-      background: #fcfbff;
-      color: var(--text);
-      transition: border-color .2s, box-shadow .2s;
-    }
-
-    .field input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(128, 100, 216, .12);
-    }
-
-    button {
-      -webkit-tap-highlight-color: transparent;
-      border: 0;
-      font-weight: 750;
-      transition:
-        transform 180ms cubic-bezier(.2, .8, .2, 1),
-        box-shadow 180ms ease,
-        background-color 180ms ease,
-        opacity 180ms ease,
-        filter 180ms ease;
-    }
-
-    button:not(:disabled) { cursor: pointer; }
-
-    button:not(:disabled):hover {
-      filter: brightness(1.035);
-      transform: translateY(-2px);
-    }
-
-    button:not(:disabled):active {
-      transform: translateY(1px) scale(.975);
-      transition-duration: 65ms;
-      box-shadow: none;
-    }
-
-    button:disabled { opacity: .65; cursor: not-allowed; }
-
-    .btn {
-      width: 100%;
-      min-height: 49px;
-      padding: 13px 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      border-radius: 14px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #8a70df, #7657ce);
-      color: #fff;
-      box-shadow: 0 7px 17px rgba(128, 100, 216, .2);
-    }
-
-    .btn-logout {
-      min-height: 40px;
-      padding: 9px 13px;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      background: white;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .btn.is-loading::after {
-      content: "";
-      width: 15px;
-      height: 15px;
-      flex-shrink: 0;
-      border: 2px solid currentColor;
-      border-right-color: transparent;
-      border-radius: 50%;
-      animation: spin .65s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-
-    .topbar h2 { margin: 0; font-size: 19px; }
-
-    .user-label {
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 12px;
-      overflow-wrap: anywhere;
-    }
-
-    .counter {
-      padding: 17px;
-      margin-bottom: 18px;
-      border: 1px solid #eee5ff;
-      border-radius: 17px;
-      background: linear-gradient(135deg, #faf7ff, #fff5fb);
-      text-align: center;
-    }
-
-    .counter-label {
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1.2px;
-    }
-
-    .counter-number {
-      margin-top: 5px;
-      color: var(--primary-dark);
-      font-size: 34px;
-      font-weight: 850;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .counter-note { margin-top: 5px; color: var(--muted); font-size: 11px; }
-
-    .mail-box {
-      margin-bottom: 14px;
-      padding: 16px;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      background: #fff;
-    }
-
-    .mail-label {
-      margin-bottom: 9px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .7px;
-      text-transform: uppercase;
-    }
-
-    .mail-value {
-      min-height: 24px;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-      font-size: 14px;
-      font-weight: 650;
-      line-height: 1.6;
-      user-select: text;
-      -webkit-user-select: text;
-    }
-
-    .placeholder { color: #b1aabd; font-weight: 450; }
-
-    .copy-button {
-      margin-top: 13px;
-      min-height: 39px;
-      padding: 10px 13px;
-      border-radius: 11px;
-      background: var(--pink);
-      color: var(--primary-dark);
-      font-size: 12px;
-    }
-
-    .notice {
-      display: none;
-      margin-bottom: 16px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.55;
-      overflow-wrap: anywhere;
-    }
-
-    .notice.show { display: block; animation: appear .24s ease both; }
-    .notice.success { background: #eaf8f0; color: #216e4a; }
-    .notice.error { background: #fff0f1; color: #a92e45; }
-    .notice.info { background: #f0edff; color: #5e4b9d; }
-
-    @keyframes appear {
-      from { opacity: 0; transform: translateY(-5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .rules {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 13px;
-      background: #faf8ff;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    .rules strong { color: var(--text); }
-
-    .footer {
-      margin-top: 20px;
-      color: #938ba5;
-      text-align: center;
-      font-size: 11px;
-      line-height: 1.7;
-    }
-
-    [hidden] { display: none !important; }
-
-    @media (max-width: 380px) {
-      .card { padding: 19px; }
-      .topbar h2 { font-size: 17px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171329">
+<title>MAIL VOTE – SH TEAM 🎃</title>
+<style>
+:root{--bg:#171329;--card:#211b38;--card2:#292142;--purple:#a68aff;--pink:#ffb5d8;--orange:#ff9b51;--text:#fff8ff;--muted:#c0b6d5;--border:#4b3c68;--green:#9ce7bd;--red:#ff9eac}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--bg)}
+body{margin:0;min-height:100vh;padding:24px 15px;display:grid;place-items:center;background:radial-gradient(ellipse at 12% 5%,#3b285d 0,transparent 40%),radial-gradient(ellipse at 90% 90%,#502d49 0,transparent 36%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+#magicCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.shell{position:relative;z-index:1;width:100%;max-width:460px;margin:auto}
+.brand{text-align:center;margin:0 auto 20px;position:relative}
+.decor{font-size:27px;display:flex;justify-content:center;gap:18px;margin-bottom:9px;filter:drop-shadow(0 0 10px #ff9b5160)}
+.brand h1{font-size:clamp(23px,5vw,29px);letter-spacing:-.8px;margin:0;font-weight:900;background:linear-gradient(100deg,#ffd39d,#ffb5d8,#c3b2ff);background-clip:text;-webkit-background-clip:text;color:transparent}
+.brand p{font-size:13px;line-height:1.6;color:var(--muted);margin:8px 0 0}
+.card{padding:24px;border:1px solid #6c5385;border-radius:24px;background:linear-gradient(150deg,rgba(42,33,67,.98),rgba(29,24,49,.98));box-shadow:0 18px 48px #08061165,0 0 0 1px #ffb5d80b;backdrop-filter:blur(8px)}
+.card h2{font-size:20px;margin:0;letter-spacing:-.3px}
+.subheading{margin:8px 0 21px;color:var(--muted);font-size:13px;line-height:1.65}
+.field{margin-bottom:15px}
+.field label{display:block;margin-bottom:8px;font-size:13px;font-weight:750}
+input{width:100%;min-height:47px;padding:12px 14px;border:1px solid var(--border);border-radius:13px;outline:none;background:#171329;color:var(--text);font:inherit;transition:border-color .16s,box-shadow .16s}
+input:focus{border-color:var(--purple);box-shadow:0 0 0 3px #a68aff20}
+button{font:inherit;font-weight:750;border:0;-webkit-tap-highlight-color:transparent;transition:transform .16s cubic-bezier(.2,.8,.2,1),filter .16s,background-color .16s,opacity .16s}
+button:not(:disabled){cursor:pointer}
+button:not(:disabled):hover{filter:brightness(1.09);transform:translateY(-2px)}
+button:not(:disabled):active{transform:translateY(1px) scale(.975);transition-duration:.06s}
+button:disabled{opacity:.6;cursor:wait}
+.btn{width:100%;min-height:48px;padding:12px 15px;display:flex;align-items:center;justify-content:center;gap:9px;border-radius:14px}
+.primary{color:#20152e;background:linear-gradient(110deg,#ffc17b,#ffacd0 52%,#c6b2ff);box-shadow:0 7px 20px #e99bc529}
+.logout{padding:9px 12px;border:1px solid var(--border);border-radius:11px;background:#2c2443;color:var(--muted);font-size:12px}
+.copy{margin-top:12px;min-height:38px;padding:9px 13px;border:1px solid #675083;border-radius:11px;background:#35274c;color:#ffd8ec;font-size:12px}
+.btn.is-loading:after{content:"";width:14px;height:14px;flex-shrink:0;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.topbar h2{font-size:19px;margin:0}
+.user-label{font-size:12px;color:var(--muted);margin-top:5px;overflow-wrap:anywhere}
+.counter{padding:16px;margin-bottom:17px;border:1px solid #69507e;border-radius:16px;background:linear-gradient(130deg,#342344,#2b2346);text-align:center}
+.counter-label{font-size:10px;font-weight:850;letter-spacing:1.3px;color:#d8c8ee}
+.counter-number{margin-top:5px;font-size:35px;font-weight:900;color:#ffc28d;font-variant-numeric:tabular-nums}
+.counter-note{margin-top:4px;color:var(--muted);font-size:11px}
+.mail-box{padding:15px;margin-bottom:13px;border:1px solid var(--border);border-radius:15px;background:#19152b}
+.mail-label{margin-bottom:8px;color:#d4c1eb;font-size:10px;font-weight:850;letter-spacing:1px;text-transform:uppercase}
+.mail-value{min-height:24px;overflow-wrap:anywhere;word-break:break-word;font-size:14px;font-weight:650;line-height:1.6;user-select:text;-webkit-user-select:text}
+.placeholder{color:#9387a9;font-weight:450}
+.notice{display:none;margin-bottom:15px;padding:11px 13px;border-radius:12px;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.notice.show{display:block;animation:noticeIn .18s ease both}
+.notice.success{background:#1e4438;color:var(--green)}.notice.error{background:#4c2535;color:var(--red)}.notice.info{background:#342b53;color:#e0d2ff}
+@keyframes noticeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.rules{margin-top:17px;padding:13px;border-radius:13px;background:#19152b;color:var(--muted);font-size:12px;line-height:1.8}
+.rules strong{color:#ffd1a5}
+.footer{text-align:center;color:#a99bbf;font-size:11px;line-height:1.8;margin-top:18px}
+[hidden]{display:none!important}
+@media(max-width:380px){.card{padding:18px}.topbar h2{font-size:17px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
 </head>
-
 <body>
-  <main class="shell">
-    <header class="brand">
-      <div class="brand-mark" aria-hidden="true">✉</div>
-      <h1>MAIL VOTE – SH TEAM</h1>
-      <p>Đăng nhập để nhận email và thực hiện bình chọn.</p>
-    </header>
+<canvas id="magicCanvas" aria-hidden="true"></canvas>
+<main class="shell">
+  <header class="brand">
+    <div class="decor" aria-hidden="true"><span>🎃</span><span>✨</span><span>🦊</span></div>
+    <h1>MAIL VOTE – SH TEAM</h1>
+    <p>A little Halloween magic for our voting team ✦</p>
+  </header>
 
-    <section class="card" id="loginPanel">
-      <h2>Đăng nhập</h2>
-      <p class="subheading">Nhập số điện thoại và mật khẩu chung của team để tiếp tục.</p>
+  <section class="card" id="loginPanel">
+    <h2>🕯️ Đăng nhập</h2>
+    <p class="subheading">Nhập số điện thoại và mật khẩu chung của team để tiếp tục.</p>
+    <div class="notice" id="loginNotice" role="status"></div>
+    <form id="loginForm">
+      <div class="field"><label for="phoneInput">Số điện thoại</label><input id="phoneInput" type="tel" inputmode="tel" autocomplete="tel" placeholder="Nhập số điện thoại" required></div>
+      <div class="field"><label for="teamPasswordInput">Mật khẩu team</label><input id="teamPasswordInput" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu" required></div>
+      <button class="btn primary" id="loginBtn" type="submit">Đăng nhập ✨</button>
+    </form>
+  </section>
 
-      <div class="notice" id="loginNotice" role="status"></div>
+  <section class="card" id="appPanel" hidden>
+    <div class="topbar"><div><h2>🎃 Khu vực bình chọn</h2><div class="user-label">Đang đăng nhập: <strong id="phoneDisplay"></strong></div></div><button class="logout" id="logoutBtn" type="button">Đăng xuất</button></div>
+    <div class="notice" id="appNotice" role="status"></div>
+    <div class="counter"><div class="counter-label">TOTAL EMAILS RECEIVED</div><div class="counter-number" id="counterDisplay">0</div><div class="counter-note">Số email đã nhận trên trình duyệt này</div></div>
+    <div class="mail-box"><div class="mail-label">✉ Email</div><div class="mail-value placeholder" id="emailDisplay">Chưa có email. Bấm nút bên dưới để nhận mail.</div><button class="copy" id="copyEmailValueBtn" type="button" hidden>✦ Copy email</button></div>
+    <div class="mail-box"><div class="mail-label">🔑 Mật khẩu email</div><div class="mail-value placeholder" id="passwordDisplay">Mật khẩu sẽ hiển thị sau khi nhận email.</div><button class="copy" id="copyPasswordBtn" type="button" disabled>✦ Copy mật khẩu</button></div>
+    <button class="btn primary" id="copyEmailBtn" type="button">🎃 Copy email · Nhận mail mới</button>
+    <div class="rules"><strong>🌙 Lưu ý</strong><br>• Mail được cấp theo thứ tự trong danh sách.<br>• Mail đã cấp sẽ không được cấp lại.<br>• Đăng xuất không đưa mail đã nhận trở lại kho.<br>• Khi hết mail, hệ thống sẽ dừng cấp mail.</div>
+  </section>
+  <footer class="footer">MAIL VOTE – SH TEAM<br>🎃 Trick or vote? 🦊</footer>
+</main>
 
-      <form id="loginForm">
-        <div class="field">
-          <label for="phoneInput">Số điện thoại</label>
-          <input id="phoneInput" type="tel" inputmode="tel"
-            autocomplete="tel" placeholder="Nhập số điện thoại" required>
-        </div>
+<script>
+"use strict";
 
-        <div class="field">
-          <label for="teamPasswordInput">Mật khẩu team</label>
-          <input id="teamPasswordInput" type="password"
-            autocomplete="current-password" placeholder="Nhập mật khẩu" required>
-        </div>
+const SUPABASE_URL = "https://ourvsebizerkxkyezeay.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_kXy4RCQliWWietdV5jKMYg_latzzh_I";
+const API_URL = `${SUPABASE_URL}/functions/v1/sh-team-login`;
+const STORAGE = {token:"sh_team_token",phone:"sh_team_phone",mail:"sh_team_current_mail",count:"sh_team_mail_count"};
+const $ = id => document.getElementById(id);
 
-        <button class="btn btn-primary" id="loginBtn" type="submit">Đăng nhập</button>
-      </form>
-    </section>
+let token = localStorage.getItem(STORAGE.token) || "";
+let phoneNumber = localStorage.getItem(STORAGE.phone) || "";
+let currentMail = readStoredMail();
+let mailCount = readStoredCount();
+let busy = false;
 
-    <section class="card" id="appPanel" hidden>
-      <div class="topbar">
-        <div>
-          <h2>Khu vực bình chọn</h2>
-          <div class="user-label">Đang đăng nhập: <strong id="phoneDisplay"></strong></div>
-        </div>
-        <button class="btn-logout" id="logoutBtn" type="button">Đăng xuất</button>
-      </div>
+function readStoredMail(){
+  try{
+    const v=JSON.parse(localStorage.getItem(STORAGE.mail)||"null");
+    if(v&&typeof v.email==="string"&&typeof v.password==="string")return v;
+  }catch(_){}
+  return null;
+}
+function readStoredCount(){
+  const n=Number(localStorage.getItem(STORAGE.count)||0);
+  return Number.isFinite(n)&&n>=0?Math.floor(n):0;
+}
+function saveMail(){
+  if(currentMail)localStorage.setItem(STORAGE.mail,JSON.stringify(currentMail));
+  else localStorage.removeItem(STORAGE.mail);
+}
+function saveCount(){localStorage.setItem(STORAGE.count,String(mailCount))}
+function showNotice(id,message,type="info"){
+  const e=$(id);e.textContent=message;e.className=`notice show ${type}`;
+}
+function hideNotice(id){const e=$(id);e.textContent="";e.className="notice"}
 
-      <div class="notice" id="appNotice" role="status"></div>
+function setBusy(value){
+  busy=value;
+  $("loginBtn").disabled=value;
+  $("copyEmailBtn").disabled=value||!token;
+  $("copyPasswordBtn").disabled=value||!currentMail;
+  $("copyEmailValueBtn").disabled=value||!currentMail;
+  $("logoutBtn").disabled=value;
+  $("loginBtn").classList.toggle("is-loading",value);
+  $("copyEmailBtn").classList.toggle("is-loading",value);
+  $("loginBtn").textContent=value?"Đang đăng nhập":"Đăng nhập ✨";
+  $("copyEmailBtn").textContent=value?"Đang lấy mail":"🎃 Copy email · Nhận mail mới";
+}
+function render(){
+  const loggedIn=Boolean(token);
+  $("loginPanel").hidden=loggedIn;
+  $("appPanel").hidden=!loggedIn;
+  $("phoneDisplay").textContent=phoneNumber;
+  $("counterDisplay").textContent=String(mailCount);
+  if(currentMail){
+    $("emailDisplay").textContent=currentMail.email;
+    $("emailDisplay").classList.remove("placeholder");
+    $("passwordDisplay").textContent=currentMail.password;
+    $("passwordDisplay").classList.remove("placeholder");
+    $("copyEmailValueBtn").hidden=false;
+  }else{
+    $("emailDisplay").textContent="Chưa có email. Bấm nút bên dưới để nhận mail.";
+    $("emailDisplay").classList.add("placeholder");
+    $("passwordDisplay").textContent="Mật khẩu sẽ hiển thị sau khi nhận email.";
+    $("passwordDisplay").classList.add("placeholder");
+    $("copyEmailValueBtn").hidden=true;
+  }
+  $("copyEmailBtn").disabled=busy||!token;
+  $("copyPasswordBtn").disabled=busy||!currentMail;
+  $("copyEmailValueBtn").disabled=busy||!currentMail;
+  $("logoutBtn").disabled=busy;
+}
+async function api(action,payload={}){
+  const headers={"Content-Type":"application/json","apikey":SUPABASE_PUBLISHABLE_KEY,"Authorization":`Bearer ${SUPABASE_PUBLISHABLE_KEY}`};
+  const body={action,...payload};
+  if(action!=="login"&&token)body.token=token;
+  const response=await fetch(API_URL,{method:"POST",headers,body:JSON.stringify(body)});
+  let result;
+  try{result=await response.json()}catch(_){throw new Error("Máy chủ trả về phản hồi không hợp lệ.")}
+  if(!response.ok||result.error)throw new Error(result.error||result.message||`Yêu cầu thất bại (${response.status}).`);
+  return result;
+}
+async function copyText(value){
+  if(typeof value!=="string"||!value.length)throw new Error("Không có nội dung để copy.");
+  if(navigator.clipboard&&window.isSecureContext){
+    await navigator.clipboard.writeText(value);return;
+  }
+  const el=document.createElement("textarea");
+  el.value=value;el.setAttribute("readonly","");
+  el.style.cssText="position:fixed;left:-9999px;top:0;opacity:0;font-size:16px";
+  document.body.appendChild(el);el.focus();el.select();el.setSelectionRange(0,value.length);
+  const ok=document.execCommand("copy");el.remove();
+  if(!ok)throw new Error("Trình duyệt chặn copy tự động. M hãy copy thủ công nội dung đang hiển thị nhé.");
+}
+function clearSession(){
+  token="";phoneNumber="";currentMail=null;
+  localStorage.removeItem(STORAGE.token);
+  localStorage.removeItem(STORAGE.phone);
+  localStorage.removeItem(STORAGE.mail);
+  hideNotice("appNotice");hideNotice("loginNotice");render();
+}
 
-      <div class="counter">
-        <div class="counter-label">TOTAL EMAILS RECEIVED</div>
-        <div class="counter-number" id="counterDisplay">0</div>
-        <div class="counter-note">Số email đã nhận trên trình duyệt này</div>
-      </div>
+$("loginForm").addEventListener("submit",async event=>{
+  event.preventDefault();if(busy)return;
+  hideNotice("loginNotice");
+  const phone=$("phoneInput").value.trim();
+  const teamPassword=$("teamPasswordInput").value;
+  if(!phone||!teamPassword){showNotice("loginNotice","M nhập đầy đủ số điện thoại và mật khẩu team nhé.","error");return}
+  const previousPhone=phoneNumber;setBusy(true);
+  try{
+    const result=await api("login",{phone_number:phone,team_password:teamPassword});
+    if(!result.token)throw new Error("Máy chủ chưa trả về phiên đăng nhập.");
+    token=result.token;phoneNumber=result.phone_number||phone;
+    localStorage.setItem(STORAGE.token,token);localStorage.setItem(STORAGE.phone,phoneNumber);
+    if(previousPhone&&previousPhone!==phoneNumber){currentMail=null;saveMail()}
+    $("teamPasswordInput").value="";hideNotice("loginNotice");render();
+  }catch(error){showNotice("loginNotice",error.message||"Đăng nhập thất bại.","error")}
+  finally{setBusy(false);render()}
+});
 
-      <div class="mail-box">
-        <div class="mail-label">Email</div>
-        <div class="mail-value placeholder" id="emailDisplay">
-          Chưa có email. Bấm nút bên dưới để nhận mail.
-        </div>
-        <button class="copy-button" id="copyEmailValueBtn" type="button" hidden>
-          Copy email
-        </button>
-      </div>
-
-      <div class="mail-box">
-        <div class="mail-label">Mật khẩu email</div>
-        <div class="mail-value placeholder" id="passwordDisplay">
-          Mật khẩu sẽ hiển thị sau khi nhận email.
-        </div>
-        <button class="copy-button" id="copyPasswordBtn" type="button" disabled>
-          Copy mật khẩu
-        </button>
-      </div>
-
-      <button class="btn btn-primary" id="copyEmailBtn" type="button">
-        Copy email · Nhận mail mới
-      </button>
-
-      <div class="rules">
-        <strong>Lưu ý</strong><br>
-        • Email được cấp lần lượt theo thứ tự trong danh sách.<br>
-        • Email đã cấp sẽ không được cấp lại.<br>
-        • Đăng xuất không làm email đã nhận quay lại kho.<br>
-        • Khi hết email, hệ thống sẽ dừng cấp mail.
-      </div>
-    </section>
-
-    <footer class="footer">
-      MAIL VOTE – SH TEAM<br>
-      Vui lòng không chia sẻ thông tin đăng nhập của team.
-    </footer>
-  </main>
-
-  <script>
-    "use strict";
-
-    const SUPABASE_URL = "https://ourvsebizerkxkyezeay.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_kXy4RCQliWWietdV5jKMYg_latzzh_I";
-    const API_URL = `${SUPABASE_URL}/functions/v1/sh-team-login`;
-
-    const STORAGE = {
-      token: "sh_team_token",
-      phone: "sh_team_phone",
-      mail: "sh_team_current_mail",
-      count: "sh_team_mail_count"
-    };
-
-    const $ = (id) => document.getElementById(id);
-
-    let token = localStorage.getItem(STORAGE.token) || "";
-    let phoneNumber = localStorage.getItem(STORAGE.phone) || "";
-    let currentMail = readStoredMail();
-    let mailCount = readStoredCount();
-    let busy = false;
-
-    function readStoredMail() {
-      try {
-        const value = JSON.parse(localStorage.getItem(STORAGE.mail) || "null");
-        if (value && typeof value.email === "string" &&
-            typeof value.password === "string") return value;
-      } catch (_) {}
-      return null;
+$("copyEmailBtn").addEventListener("click",async()=>{
+  if(!token||busy)return;
+  hideNotice("appNotice");setBusy(true);
+  try{
+    const result=await api("claim");
+    const mail=result.mail||result;
+    if(mail.id==null||typeof mail.email!=="string"||typeof mail.password!=="string")
+      throw new Error("Máy chủ không trả về email và mật khẩu hợp lệ.");
+    currentMail={id:Number(mail.id),email:mail.email,password:mail.password};
+    saveMail();mailCount+=1;saveCount();render();
+    launchFireworks();
+    try{
+      await copyText(currentMail.email);
+      showNotice("appNotice","Đã nhận mail mới và copy email. Mật khẩu đã được cập nhật theo mail này.","success");
+    }catch(_){
+      showNotice("appNotice","Mail đã được cấp và hiển thị. Trình duyệt chưa tự copy được; m có thể copy email đang hiển thị.","info");
     }
+  }catch(error){
+    const message=error.message||"Không thể nhận mail.";
+    if(/no mail|no available|out of mail|hết mail|không còn mail/i.test(message))
+      showNotice("appNotice","Kho mail đã hết. Hệ thống sẽ không quay lại cấp các mail cũ.","info");
+    else showNotice("appNotice",message,"error");
+  }finally{setBusy(false);render()}
+});
 
-    function readStoredCount() {
-      const value = Number(localStorage.getItem(STORAGE.count) || 0);
-      return Number.isFinite(value) && value >= 0 ? Math.floor(value) : 0;
+$("copyEmailValueBtn").addEventListener("click",async()=>{
+  if(!currentMail?.email){showNotice("appNotice","Chưa có email để copy.","error");return}
+  try{await copyText(currentMail.email);launchFireworks();showNotice("appNotice","Đã copy email đang hiển thị.","success")}
+  catch(error){showNotice("appNotice",error.message,"error")}
+});
+$("copyPasswordBtn").addEventListener("click",async()=>{
+  if(!currentMail||!currentMail.password){showNotice("appNotice","Chưa có mật khẩu để copy.","error");return}
+  try{await copyText(currentMail.password);launchFireworks();showNotice("appNotice","Đã copy mật khẩu!","success")}
+  catch(error){showNotice("appNotice",error.message,"error")}
+});
+$("logoutBtn").addEventListener("click",async()=>{
+  if(busy)return;
+  const oldToken=token;setBusy(true);
+  try{await api("logout")}catch(_){}
+  finally{if(token===oldToken)clearSession();setBusy(false);render()}
+});
+render();
+
+/* Lightweight Halloween magic: canvas is behind the card, so it never covers mail text/buttons. */
+(() => {
+  const canvas=$("magicCanvas"),ctx=canvas.getContext("2d",{alpha:true});
+  const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let w=0,h=0,dpr=1,raf=0,lastFrame=0;
+  const stars=[],particles=[];
+  const colors=["#ffb5d8","#c6b2ff","#ffc17b","#fff2b0","#9ce7bd"];
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,1.5);
+    w=window.innerWidth;h=window.innerHeight;
+    canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+    canvas.style.width=w+"px";canvas.style.height=h+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener("resize",resize,{passive:true});resize();
+
+  function addStar(x,y){
+    if(reduceMotion)return;
+    stars.push({x,y,vx:(Math.random()-.5)*.8,vy:-Math.random()*1.1-.2,life:1,size:Math.random()*2.2+1,color:colors[(Math.random()*colors.length)|0]});
+    if(stars.length>65)stars.splice(0,stars.length-65);
+    startLoop();
+  }
+  let lastPointer=0;
+  window.addEventListener("pointermove",e=>{
+    const now=performance.now();
+    if(now-lastPointer<35)return;
+    lastPointer=now;addStar(e.clientX,e.clientY);
+  },{passive:true});
+
+  function burst(x,y,kind){
+    if(reduceMotion)return;
+    const count=kind==="fox"?34:kind==="pumpkin"?30:38;
+    for(let i=0;i<count;i++){
+      const a=Math.PI*2*i/count+(Math.random()-.5)*.12;
+      const speed=1.1+Math.random()*2.2;
+      particles.push({x,y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,life:1,decay:.012+Math.random()*.012,size:1.4+Math.random()*2,color:colors[(Math.random()*colors.length)|0],kind:"dot"});
     }
-
-    function saveMail() {
-      if (currentMail) {
-        localStorage.setItem(STORAGE.mail, JSON.stringify(currentMail));
-      } else {
-        localStorage.removeItem(STORAGE.mail);
+    // Small themed silhouettes float around the outer background, behind the content card.
+    particles.push({x,y,vx:(Math.random()-.5)*.7,vy:-.9,life:1,decay:.009,size:kind==="fox"?22:23,kind:"emoji",emoji:kind==="fox"?"🦊":"🎃"});
+    startLoop();
+  }
+  function launchFireworks(){
+    if(reduceMotion)return;
+    const shell=document.querySelector(".shell").getBoundingClientRect();
+    const edgePoints=[
+      {x:Math.max(25,shell.left*.45),y:Math.max(65,shell.top+shell.height*.25)},
+      {x:Math.min(w-25,shell.right+(w-shell.right)*.48),y:Math.max(75,shell.top+shell.height*.4)},
+      {x:Math.max(30,shell.left*.55),y:Math.min(h-35,shell.bottom+(h-shell.bottom)*.38)},
+      {x:Math.min(w-30,shell.right+(w-shell.right)*.45),y:Math.min(h-35,shell.bottom+(h-shell.bottom)*.35)}
+    ].filter(p=>p.x<shell.left-3||p.x>shell.right+3||p.y<shell.top-3||p.y>shell.bottom+3);
+    if(!edgePoints.length)return;
+    const p=edgePoints[(Math.random()*edgePoints.length)|0];
+    burst(p.x,p.y,Math.random()>.5?"fox":"pumpkin");
+    if(w>600){
+      setTimeout(()=>burst(Math.random()>.5?Math.max(25,shell.left*.5):Math.min(w-25,shell.right+(w-shell.right)*.5),Math.random()>.5?Math.max(60,shell.top):Math.min(h-30,shell.bottom+35),Math.random()>.5?"fox":"pumpkin"),100);
+    }
+  }
+  function startLoop(){if(!raf)raf=requestAnimationFrame(draw)}
+  function draw(now){
+    raf=0;
+    if(now-lastFrame<24){raf=requestAnimationFrame(draw);return}
+    lastFrame=now;ctx.clearRect(0,0,w,h);
+    for(let i=stars.length-1;i>=0;i--){
+      const p=stars[i];p.x+=p.vx;p.y+=p.vy;p.life-=.035;
+      if(p.life<=0){stars.splice(i,1);continue}
+      ctx.globalAlpha=p.life;ctx.fillStyle=p.color;
+      ctx.beginPath();
+      for(let k=0;k<8;k++){
+        const a=k*Math.PI/4, r=k%2===0?p.size:p.size*.35;
+        const xx=p.x+Math.cos(a)*r,yy=p.y+Math.sin(a)*r;
+        if(k===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);
       }
+      ctx.closePath();ctx.fill();
     }
-
-    function saveCount() {
-      localStorage.setItem(STORAGE.count, String(mailCount));
-    }
-
-    function showNotice(id, message, type = "info") {
-      const el = $(id);
-      el.textContent = message;
-      el.className = `notice show ${type}`;
-    }
-
-    function hideNotice(id) {
-      const el = $(id);
-      el.textContent = "";
-      el.className = "notice";
-    }
-
-    function setBusy(value) {
-      busy = value;
-      $("loginBtn").disabled = value;
-      $("copyEmailBtn").disabled = value || !token;
-      $("copyPasswordBtn").disabled = value || !currentMail;
-      $("copyEmailValueBtn").disabled = value || !currentMail;
-      $("logoutBtn").disabled = value;
-
-      $("loginBtn").classList.toggle("is-loading", value);
-      $("copyEmailBtn").classList.toggle("is-loading", value);
-
-      $("loginBtn").textContent = value ? "Đang đăng nhập" : "Đăng nhập";
-      $("copyEmailBtn").textContent = value
-        ? "Đang lấy mail"
-        : "Copy email · Nhận mail mới";
-    }
-
-    function render() {
-      const loggedIn = Boolean(token);
-      $("loginPanel").hidden = loggedIn;
-      $("appPanel").hidden = !loggedIn;
-      $("phoneDisplay").textContent = phoneNumber;
-      $("counterDisplay").textContent = String(mailCount);
-
-      if (currentMail) {
-        $("emailDisplay").textContent = currentMail.email;
-        $("emailDisplay").classList.remove("placeholder");
-        $("passwordDisplay").textContent = currentMail.password;
-        $("passwordDisplay").classList.remove("placeholder");
-        $("copyEmailValueBtn").hidden = false;
-      } else {
-        $("emailDisplay").textContent = "Chưa có email. Bấm nút bên dưới để nhận mail.";
-        $("emailDisplay").classList.add("placeholder");
-        $("passwordDisplay").textContent = "Mật khẩu sẽ hiển thị sau khi nhận email.";
-        $("passwordDisplay").classList.add("placeholder");
-        $("copyEmailValueBtn").hidden = true;
-      }
-
-      $("copyEmailBtn").disabled = busy || !token;
-      $("copyPasswordBtn").disabled = busy || !currentMail;
-      $("copyEmailValueBtn").disabled = busy || !currentMail;
-      $("logoutBtn").disabled = busy;
-    }
-
-    async function api(action, payload = {}) {
-      const headers = {
-        "Content-Type": "application/json",
-        "apikey": SUPABASE_PUBLISHABLE_KEY,
-        "Authorization": `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
-      };
-
-      const body = { action, ...payload };
-      if (action !== "login" && token) body.token = token;
-
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(body)
-      });
-
-      let result;
-      try {
-        result = await response.json();
-      } catch (_) {
-        throw new Error("Máy chủ trả về phản hồi không hợp lệ.");
-      }
-
-      if (!response.ok || result.error) {
-        throw new Error(result.error || result.message ||
-          `Yêu cầu thất bại (${response.status}).`);
-      }
-
-      return result;
-    }
-
-    async function copyText(value) {
-      if (typeof value !== "string" || value.length === 0) {
-        throw new Error("Không có nội dung để copy.");
-      }
-
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(value);
-        return;
-      }
-
-      const temporary = document.createElement("textarea");
-      temporary.value = value;
-      temporary.setAttribute("readonly", "");
-      temporary.style.position = "fixed";
-      temporary.style.left = "-9999px";
-      temporary.style.top = "0";
-      document.body.appendChild(temporary);
-      temporary.focus();
-      temporary.select();
-      temporary.setSelectionRange(0, temporary.value.length);
-
-      const copied = document.execCommand("copy");
-      temporary.remove();
-
-      if (!copied) {
-        throw new Error("Trình duyệt chặn copy tự động. M hãy copy thủ công nội dung đang hiển thị nhé.");
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=p.kind==="dot"?.025:0;p.vx*=.99;p.life-=p.decay;
+      if(p.life<=0){particles.splice(i,1);continue}
+      ctx.globalAlpha=Math.min(1,p.life);
+      if(p.kind==="emoji"){
+        ctx.font=`${p.size}px system-ui, sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(p.emoji,p.x,p.y);
+      }else{
+        ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();
       }
     }
-
-    function clearSession() {
-      token = "";
-      phoneNumber = "";
-      currentMail = null;
-      localStorage.removeItem(STORAGE.token);
-      localStorage.removeItem(STORAGE.phone);
-      localStorage.removeItem(STORAGE.mail);
-      hideNotice("appNotice");
-      hideNotice("loginNotice");
-      render();
-    }
-
-    $("loginForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      if (busy) return;
-
-      hideNotice("loginNotice");
-      const phone = $("phoneInput").value.trim();
-      const teamPassword = $("teamPasswordInput").value;
-
-      if (!phone || !teamPassword) {
-        showNotice("loginNotice", "M nhập đầy đủ số điện thoại và mật khẩu team nhé.", "error");
-        return;
-      }
-
-      const previousPhone = phoneNumber;
-      setBusy(true);
-
-      try {
-        const result = await api("login", {
-          phone_number: phone,
-          team_password: teamPassword
-        });
-
-        if (!result.token) throw new Error("Máy chủ chưa trả về phiên đăng nhập.");
-
-        token = result.token;
-        phoneNumber = result.phone_number || phone;
-        localStorage.setItem(STORAGE.token, token);
-        localStorage.setItem(STORAGE.phone, phoneNumber);
-
-        if (previousPhone && previousPhone !== phoneNumber) {
-          currentMail = null;
-          saveMail();
-        }
-
-        $("teamPasswordInput").value = "";
-        hideNotice("loginNotice");
-        render();
-      } catch (error) {
-        showNotice("loginNotice", error.message || "Đăng nhập thất bại.", "error");
-      } finally {
-        setBusy(false);
-        render();
-      }
-    });
-
-    $("copyEmailBtn").addEventListener("click", async () => {
-      if (!token || busy) return;
-
-      hideNotice("appNotice");
-      setBusy(true);
-
-      try {
-        const result = await api("claim");
-        const mail = result.mail || result;
-
-        if (mail.id == null || typeof mail.email !== "string" ||
-            typeof mail.password !== "string") {
-          throw new Error("Máy chủ không trả về email và mật khẩu hợp lệ.");
-        }
-
-        currentMail = {
-          id: Number(mail.id),
-          email: mail.email,
-          password: mail.password
-        };
-
-        saveMail();
-        mailCount += 1;
-        saveCount();
-        render();
-
-        try {
-          await copyText(currentMail.email);
-          showNotice("appNotice",
-            "Đã nhận mail mới và copy email. Mật khẩu đã được cập nhật theo mail này.",
-            "success");
-        } catch (_) {
-          showNotice("appNotice",
-            "Mail đã được cấp và hiển thị. Trình duyệt chưa tự copy được; m có thể copy email đang hiển thị.",
-            "info");
-        }
-      } catch (error) {
-        const message = error.message || "Không thể nhận mail.";
-        if (/no mail|no available|out of mail|hết mail|không còn mail/i.test(message)) {
-          showNotice("appNotice",
-            "Kho mail đã hết. Hệ thống sẽ không quay lại cấp các mail cũ.",
-            "info");
-        } else {
-          showNotice("appNotice", message, "error");
-        }
-      } finally {
-        setBusy(false);
-        render();
-      }
-    });
-
-    $("copyEmailValueBtn").addEventListener("click", async () => {
-      if (!currentMail || !currentMail.email) {
-        showNotice("appNotice", "Chưa có email để copy.", "error");
-        return;
-      }
-
-      try {
-        await copyText(currentMail.email);
-        showNotice("appNotice", "Đã copy email đang hiển thị.", "success");
-      } catch (error) {
-        showNotice("appNotice", error.message, "error");
-      }
-    });
-
-    // Copy mật khẩu độc lập: không gọi API, không tăng bộ đếm.
-    $("copyPasswordBtn").addEventListener("click", async () => {
-      if (!currentMail || !currentMail.password) {
-        showNotice("appNotice", "Chưa có mật khẩu để copy.", "error");
-        return;
-      }
-
-      try {
-        await copyText(currentMail.password);
-        showNotice("appNotice", "Đã copy mật khẩu!", "success");
-      } catch (error) {
-        showNotice("appNotice", error.message, "error");
-      }
-    });
-
-    $("logoutBtn").addEventListener("click", async () => {
-      if (busy) return;
-
-      const oldToken = token;
-      setBusy(true);
-
-      try {
-        await api("logout");
-      } catch (_) {
-        // Dọn phiên trên trình duyệt dù yêu cầu logout thất bại.
-      } finally {
-        if (token === oldToken) clearSession();
-        setBusy(false);
-        render();
-      }
-    });
-
-    render();
-  </script>
+    ctx.globalAlpha=1;
+    if(stars.length||particles.length)raf=requestAnimationFrame(draw);
+  }
+  window.launchFireworks=launchFireworks;
+})();
+</script>
 </body>
 </html>
