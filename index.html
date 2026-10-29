@@ -68,9 +68,10 @@ button:disabled{opacity:.6;cursor:wait}
 
   <section class="card" id="loginPanel">
     <h2>🕯️ Đăng nhập</h2>
-    <p class="subheading">Nhập số điện thoại và mật khẩu chung của team để tiếp tục.</p>
+    <p class="subheading">Nhập tên, số điện thoại và mật khẩu chung của team để tiếp tục.</p>
     <div class="notice" id="loginNotice" role="status"></div>
     <form id="loginForm">
+      <div class="field"><label for="nameInput">Tên</label><input id="nameInput" type="text" autocomplete="name" maxlength="100" placeholder="Nhập tên của m" required></div>
       <div class="field"><label for="phoneInput">Số điện thoại</label><input id="phoneInput" type="tel" inputmode="tel" autocomplete="tel" placeholder="Nhập số điện thoại" required></div>
       <div class="field"><label for="teamPasswordInput">Mật khẩu team</label><input id="teamPasswordInput" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu" required></div>
       <button class="btn primary" id="loginBtn" type="submit">Đăng nhập ✨</button>
@@ -78,7 +79,7 @@ button:disabled{opacity:.6;cursor:wait}
   </section>
 
   <section class="card" id="appPanel" hidden>
-    <div class="topbar"><div><h2>🎃 Khu vực bình chọn</h2><div class="user-label">Đang đăng nhập: <strong id="phoneDisplay"></strong></div></div><button class="logout" id="logoutBtn" type="button">Đăng xuất</button></div>
+    <div class="topbar"><div><h2>🎃 Khu vực bình chọn</h2><div class="user-label">Đang đăng nhập: <strong id="nameDisplay"></strong> · <span id="phoneDisplay"></span></div></div><button class="logout" id="logoutBtn" type="button">Đăng xuất</button></div>
     <div class="notice" id="appNotice" role="status"></div>
     <div class="counter"><div class="counter-label">TOTAL EMAILS RECEIVED</div><div class="counter-number" id="counterDisplay">0</div><div class="counter-note">Số email đã nhận trên trình duyệt này</div></div>
     <div class="mail-box"><div class="mail-label">✉ Email</div><div class="mail-value placeholder" id="emailDisplay">Chưa có email. Bấm nút bên dưới để nhận mail.</div><button class="copy" id="copyEmailValueBtn" type="button" hidden>✦ Copy email</button></div>
@@ -95,11 +96,12 @@ button:disabled{opacity:.6;cursor:wait}
 const SUPABASE_URL = "https://ourvsebizerkxkyezeay.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_kXy4RCQliWWietdV5jKMYg_latzzh_I";
 const API_URL = `${SUPABASE_URL}/functions/v1/sh-team-login`;
-const STORAGE = {token:"sh_team_token",phone:"sh_team_phone",mail:"sh_team_current_mail",count:"sh_team_mail_count"};
+const STORAGE = {token:"sh_team_token",name:"sh_team_name",phone:"sh_team_phone",mail:"sh_team_current_mail",count:"sh_team_mail_count"};
 const $ = id => document.getElementById(id);
 
 let token = localStorage.getItem(STORAGE.token) || "";
 let phoneNumber = localStorage.getItem(STORAGE.phone) || "";
+let personName = localStorage.getItem(STORAGE.name) || "";
 let currentMail = readStoredMail();
 let mailCount = readStoredCount();
 let busy = false;
@@ -141,6 +143,7 @@ function render(){
   const loggedIn=Boolean(token);
   $("loginPanel").hidden=loggedIn;
   $("appPanel").hidden=!loggedIn;
+  $("nameDisplay").textContent=personName;
   $("phoneDisplay").textContent=phoneNumber;
   $("counterDisplay").textContent=String(mailCount);
   if(currentMail){
@@ -184,8 +187,9 @@ async function copyText(value){
   if(!ok)throw new Error("Trình duyệt chặn copy tự động. M hãy copy thủ công nội dung đang hiển thị nhé.");
 }
 function clearSession(){
-  token="";phoneNumber="";currentMail=null;
+  token="";personName="";phoneNumber="";currentMail=null;
   localStorage.removeItem(STORAGE.token);
+  localStorage.removeItem(STORAGE.name);
   localStorage.removeItem(STORAGE.phone);
   localStorage.removeItem(STORAGE.mail);
   hideNotice("appNotice");hideNotice("loginNotice");render();
@@ -194,15 +198,16 @@ function clearSession(){
 $("loginForm").addEventListener("submit",async event=>{
   event.preventDefault();if(busy)return;
   hideNotice("loginNotice");
+  const name=$("nameInput").value.trim();
   const phone=$("phoneInput").value.trim();
   const teamPassword=$("teamPasswordInput").value;
-  if(!phone||!teamPassword){showNotice("loginNotice","M nhập đầy đủ số điện thoại và mật khẩu team nhé.","error");return}
+  if(!name||!phone||!teamPassword){showNotice("loginNotice","M nhập đầy đủ tên, số điện thoại và mật khẩu team nhé.","error");return}
   const previousPhone=phoneNumber;setBusy(true);
   try{
-    const result=await api("login",{phone_number:phone,team_password:teamPassword});
+    const result=await api("login",{name,phone_number:phone,team_password:teamPassword});
     if(!result.token)throw new Error("Máy chủ chưa trả về phiên đăng nhập.");
-    token=result.token;phoneNumber=result.phone_number||phone;
-    localStorage.setItem(STORAGE.token,token);localStorage.setItem(STORAGE.phone,phoneNumber);
+    token=result.token;personName=result.name||name;phoneNumber=result.phone_number||phone;
+    localStorage.setItem(STORAGE.token,token);localStorage.setItem(STORAGE.name,personName);localStorage.setItem(STORAGE.phone,phoneNumber);
     if(previousPhone&&previousPhone!==phoneNumber){currentMail=null;saveMail()}
     $("teamPasswordInput").value="";hideNotice("loginNotice");render();
   }catch(error){showNotice("loginNotice",error.message||"Đăng nhập thất bại.","error")}
@@ -213,7 +218,7 @@ $("copyEmailBtn").addEventListener("click",async()=>{
   if(!token||busy)return;
   hideNotice("appNotice");setBusy(true);
   try{
-    const result=await api("claim");
+    const result=await api("claim",{name:personName});
     const mail=result.mail||result;
     if(mail.id==null||typeof mail.email!=="string"||typeof mail.password!=="string")
       throw new Error("Máy chủ không trả về email và mật khẩu hợp lệ.");
