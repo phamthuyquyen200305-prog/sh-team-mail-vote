@@ -2,621 +2,778 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f7f5ff" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f5ff">
   <title>MAIL VOTE – SH TEAM</title>
 
   <style>
     :root {
-      --bg: #f7f5ff;
+      --bg: #f8f5ff;
       --card: #ffffff;
-      --ink: #29263b;
-      --muted: #858198;
-      --purple: #7561dc;
-      --purple-dark: #5e4ac5;
-      --border: #e9e5f5;
-      --soft: #f0edff;
-      --danger: #d94e6a;
-      --success: #23865b;
+      --primary: #8064d8;
+      --primary-dark: #684bc3;
+      --pink: #f6eaff;
+      --text: #29243a;
+      --muted: #777187;
+      --border: #e9e2f5;
+      --success: #21865b;
+      --error: #c3445a;
+      --shadow: 0 14px 40px rgba(76, 52, 126, .09);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 28px 16px;
+      padding: 24px 16px;
+      display: grid;
+      place-items: center;
       background:
-        radial-gradient(ellipse at top left, #eee9ff 0, transparent 45%),
+        radial-gradient(ellipse at top left, #f0e7ff 0, transparent 42%),
+        radial-gradient(ellipse at bottom right, #ffeaf4 0, transparent 38%),
         var(--bg);
-      color: var(--ink);
+      color: var(--text);
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
     }
 
-    button, input { font: inherit; }
-
-    button {
-      cursor: pointer;
-      transition: transform .15s, opacity .15s, background .15s;
+    button, input {
+      font: inherit;
     }
 
-    button:active { transform: scale(.985); }
-    button:disabled { opacity: .55; cursor: not-allowed; }
-
-    .container {
+    .shell {
       width: 100%;
-      max-width: 520px;
-      margin: 0 auto;
+      max-width: 460px;
+      margin: auto;
     }
 
     .brand {
+      margin-bottom: 22px;
       text-align: center;
-      margin: 12px 0 26px;
     }
 
-    .brand-icon {
+    .brand-mark {
       width: 58px;
       height: 58px;
       margin: 0 auto 14px;
       display: grid;
       place-items: center;
       border-radius: 20px;
-      background: var(--soft);
-      font-size: 27px;
+      background: linear-gradient(135deg, #9b83eb, #d4a8f4);
+      box-shadow: 0 8px 22px rgba(128, 100, 216, .22);
+      color: white;
+      font-size: 26px;
     }
 
     .brand h1 {
       margin: 0;
-      font-size: clamp(23px, 5vw, 30px);
+      font-size: clamp(23px, 5vw, 29px);
+      font-weight: 850;
       letter-spacing: -.8px;
     }
 
     .brand p {
-      margin: 9px 0 0;
+      margin: 8px 0 0;
       color: var(--muted);
       font-size: 13px;
-      letter-spacing: 1.4px;
+      line-height: 1.6;
     }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
+      padding: 25px;
+      border: 1px solid rgba(233, 226, 245, .9);
       border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 14px 45px #493b7c0d;
+      background: rgba(255, 255, 255, .95);
+      box-shadow: var(--shadow);
     }
 
-    .hidden { display: none !important; }
-
-    h2 {
-      margin: 0 0 8px;
-      font-size: 21px;
+    .card h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -.3px;
     }
 
-    .subtitle {
+    .subheading {
+      margin: 8px 0 22px;
       color: var(--muted);
-      margin: 0 0 24px;
+      font-size: 13px;
       line-height: 1.6;
-      font-size: 14px;
     }
 
-    .field { margin-bottom: 16px; }
+    .field {
+      margin-bottom: 16px;
+    }
 
-    label {
+    .field label {
       display: block;
       margin-bottom: 8px;
       font-size: 13px;
-      font-weight: 650;
+      font-weight: 700;
     }
 
-    input {
+    .field input {
       width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 13px 14px;
+      border-radius: 13px;
       outline: none;
-      color: var(--ink);
-      background: #fff;
+      background: #fcfbff;
+      color: var(--text);
+      transition: border-color .2s ease, box-shadow .2s ease;
     }
 
-    input:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px #7561dc18;
+    .field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(128, 100, 216, .12);
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+      border: 0;
+      font-weight: 750;
+      transition:
+        transform 180ms cubic-bezier(.2, .8, .2, 1),
+        box-shadow 180ms ease,
+        background-color 180ms ease,
+        opacity 180ms ease,
+        filter 180ms ease;
+    }
+
+    button:not(:disabled) {
+      cursor: pointer;
+    }
+
+    button:not(:disabled):hover {
+      filter: brightness(1.035);
+      transform: translateY(-2px);
+    }
+
+    button:not(:disabled):active {
+      transform: translateY(1px) scale(.975);
+      transition-duration: 65ms;
+      box-shadow: none;
+    }
+
+    button:disabled {
+      opacity: .72;
+      cursor: wait;
     }
 
     .btn {
       width: 100%;
-      border: 0;
-      border-radius: 12px;
-      padding: 14px 16px;
-      font-weight: 700;
+      min-height: 49px;
+      padding: 13px 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-radius: 14px;
     }
 
     .btn-primary {
-      color: white;
-      background: var(--purple);
+      background: linear-gradient(135deg, #8a70df, #7657ce);
+      color: #fff;
+      box-shadow: 0 7px 17px rgba(128, 100, 216, .2);
     }
-
-    .btn-primary:hover { background: var(--purple-dark); }
 
     .btn-secondary {
-      color: var(--purple-dark);
-      background: var(--soft);
+      border: 1px solid var(--border);
+      background: #f7f3ff;
+      color: var(--primary-dark);
     }
 
-    .btn-outline {
+    .btn-logout {
+      min-height: 40px;
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
       background: white;
       color: var(--muted);
-      border: 1px solid var(--border);
+      font-size: 12px;
     }
 
-    .btn + .btn { margin-top: 10px; }
-
-    .notice {
-      display: none;
-      margin-top: 16px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .notice.show { display: block; }
-    .notice.error { color: #a32f4b; background: #fff0f3; }
-    .notice.success { color: #176b47; background: #eaf8f0; }
-    .notice.info { color: #5948a9; background: var(--soft); }
-
-    .account-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 20px;
-      font-size: 13px;
-    }
-
-    .account-label {
-      min-width: 0;
-      overflow-wrap: anywhere;
-      color: var(--muted);
-    }
-
-    .logout {
+    .btn.is-loading::after {
+      content: "";
+      width: 15px;
+      height: 15px;
       flex-shrink: 0;
-      border: 0;
-      padding: 8px 11px;
-      border-radius: 10px;
-      color: var(--danger);
-      background: #fff0f3;
-      font-size: 12px;
-      font-weight: 700;
+      border: 2px solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: button-spin .65s linear infinite;
     }
 
-    .counter {
+    @keyframes button-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .topbar {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      padding: 18px;
+      justify-content: space-between;
+      gap: 12px;
       margin-bottom: 22px;
-      border-radius: 17px;
-      background: linear-gradient(135deg, #f1edff, #faf8ff);
-      border: 1px solid #e7e0ff;
     }
 
-    .counter-label {
-      font-size: 12px;
-      color: #746c94;
-      font-weight: 750;
-      letter-spacing: .7px;
+    .topbar h2 {
+      margin: 0;
+      font-size: 19px;
     }
 
-    .counter-caption {
+    .user-label {
       margin-top: 5px;
       color: var(--muted);
       font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .counter {
+      padding: 17px;
+      margin-bottom: 18px;
+      border: 1px solid #eee5ff;
+      border-radius: 17px;
+      background: linear-gradient(135deg, #faf7ff, #fff5fb);
+      text-align: center;
+    }
+
+    .counter-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
     }
 
     .counter-number {
+      margin-top: 5px;
+      color: var(--primary-dark);
       font-size: 34px;
-      font-weight: 800;
-      color: var(--purple-dark);
-      line-height: 1;
+      font-weight: 850;
       font-variant-numeric: tabular-nums;
     }
 
-    .mail-panel {
-      padding: 17px;
+    .counter-note {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .mail-box {
+      margin-bottom: 14px;
+      padding: 16px;
       border: 1px solid var(--border);
-      border-radius: 16px;
-      margin-bottom: 18px;
+      border-radius: 15px;
+      background: #fff;
     }
 
-    .mail-panel + .mail-panel { margin-top: 14px; }
-
-    .panel-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 13px;
-      font-size: 14px;
-      font-weight: 750;
+    .mail-label {
+      margin-bottom: 9px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .7px;
+      text-transform: uppercase;
     }
 
-    .pill {
-      padding: 5px 8px;
-      border-radius: 99px;
-      background: #f2f0f8;
-      color: #827a98;
-      font-size: 10px;
-      font-weight: 750;
-    }
-
-    .data-value {
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      padding: 11px 12px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: #fcfbff;
-      font-size: 14px;
+    .mail-value {
+      min-height: 24px;
       overflow-wrap: anywhere;
       word-break: break-word;
-      margin-bottom: 11px;
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.6;
       user-select: text;
     }
 
-    .data-value.empty { color: #aaa5ba; }
+    .placeholder {
+      color: #b1aabd;
+      font-weight: 450;
+    }
 
-    .hint {
+    .copy-button {
+      margin-top: 13px;
+      min-height: 39px;
+      padding: 10px 13px;
+      border-radius: 11px;
+      background: var(--pink);
+      color: var(--primary-dark);
+      font-size: 12px;
+    }
+
+    .notice {
+      display: none;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .notice.show {
+      display: block;
+      animation: notice-in .24s ease both;
+    }
+
+    .notice.success {
+      background: #eaf8f0;
+      color: #216e4a;
+    }
+
+    .notice.error {
+      background: #fff0f1;
+      color: #a92e45;
+    }
+
+    .notice.info {
+      background: #f0edff;
+      color: #5e4b9d;
+    }
+
+    @keyframes notice-in {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .rules {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 13px;
+      background: #faf8ff;
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.6;
-      margin: 16px 0 0;
+      line-height: 1.8;
+    }
+
+    .rules strong {
+      color: var(--text);
     }
 
     .footer {
+      margin-top: 20px;
+      color: #938ba5;
       text-align: center;
-      color: #a09ab4;
       font-size: 11px;
-      margin: 22px 0 0;
       line-height: 1.7;
     }
 
-    @media (max-width: 420px) {
-      body { padding: 16px 12px; }
-      .card { padding: 18px; border-radius: 20px; }
-      .counter { padding: 15px; }
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 380px) {
+      .card { padding: 19px; }
+      .topbar h2 { font-size: 17px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
 
 <body>
-  <main class="container">
+  <main class="shell">
     <header class="brand">
-      <div class="brand-icon">✉️</div>
-      <h1>MAIL VOTE</h1>
-      <p>SH TEAM · MAIL MANAGEMENT</p>
+      <div class="brand-mark" aria-hidden="true">✉</div>
+      <h1>MAIL VOTE – SH TEAM</h1>
+      <p>Đăng nhập để nhận email và thực hiện bình chọn.</p>
     </header>
 
-    <!-- LOGIN -->
-    <section id="loginView" class="card">
-      <h2>Welcome back!</h2>
-      <p class="subtitle">
-        Đăng nhập vào hệ thống để nhận email của SH TEAM.
+    <section class="card" id="loginPanel">
+      <h2>Đăng nhập</h2>
+      <p class="subheading">
+        Nhập số điện thoại và mật khẩu chung của team để tiếp tục.
       </p>
+
+      <div class="notice" id="loginNotice" role="status"></div>
 
       <form id="loginForm">
         <div class="field">
-          <label for="phone">Số điện thoại</label>
+          <label for="phoneInput">Số điện thoại</label>
           <input
-            id="phone"
+            id="phoneInput"
             type="tel"
+            inputmode="tel"
             autocomplete="tel"
             placeholder="Nhập số điện thoại"
             required
-            maxlength="20"
-          />
+          >
         </div>
 
         <div class="field">
-          <label for="teamPassword">Mật khẩu SH TEAM</label>
+          <label for="teamPasswordInput">Mật khẩu team</label>
           <input
-            id="teamPassword"
+            id="teamPasswordInput"
             type="password"
             autocomplete="current-password"
-            placeholder="Nhập mật khẩu chung"
+            placeholder="Nhập mật khẩu"
             required
-          />
+          >
         </div>
 
-        <button id="loginBtn" class="btn btn-primary" type="submit">
+        <button class="btn btn-primary" id="loginBtn" type="submit">
           Đăng nhập
         </button>
       </form>
-
-      <div id="loginNotice" class="notice" role="status"></div>
     </section>
 
-    <!-- APP -->
-    <section id="appView" class="card hidden">
-      <div class="account-bar">
-        <div class="account-label">
-          Đang đăng nhập: <strong id="currentPhone"></strong>
+    <section class="card" id="appPanel" hidden>
+      <div class="topbar">
+        <div>
+          <h2>Khu vực bình chọn</h2>
+          <div class="user-label">
+            Đang đăng nhập: <strong id="phoneDisplay"></strong>
+          </div>
         </div>
-        <button id="logoutBtn" class="logout" type="button">
+
+        <button class="btn-logout" id="logoutBtn" type="button">
           Đăng xuất
         </button>
       </div>
 
-      <h2>Your mail dashboard</h2>
-      <p class="subtitle">
-        Bấm Copy email để nhận một email mới theo thứ tự.
-      </p>
+      <div class="notice" id="appNotice" role="status"></div>
 
       <div class="counter">
-        <div>
-          <div class="counter-label">MAIL COPIED · THIS BROWSER</div>
-          <div class="counter-caption">Số mail đã nhận trên trình duyệt này</div>
+        <div class="counter-label">TOTAL EMAILS RECEIVED</div>
+        <div class="counter-number" id="counterDisplay">0</div>
+        <div class="counter-note">
+          Số email đã nhận trên trình duyệt này
         </div>
-        <div id="counterNumber" class="counter-number">0</div>
       </div>
 
-      <div class="mail-panel">
-        <div class="panel-heading">
-          <span>Email account</span>
-          <span class="pill" id="mailStatus">CHƯA CÓ MAIL</span>
+      <div class="mail-box">
+        <div class="mail-label">Email</div>
+        <div class="mail-value placeholder" id="emailDisplay">
+          Chưa có email. Bấm nút bên dưới để nhận mail.
         </div>
 
-        <div id="emailValue" class="data-value empty">
-          Bấm “Copy email” để nhận mail
-        </div>
-
-        <button id="copyEmailBtn" class="btn btn-primary" type="button">
-          Copy email · Nhận mail mới
+        <button
+          class="copy-button"
+          id="copyEmailValueBtn"
+          type="button"
+          hidden
+        >
+          Copy email
         </button>
       </div>
 
-      <div class="mail-panel">
-        <div class="panel-heading">
-          <span>Email password</span>
-          <span class="pill">MATCHED PASSWORD</span>
+      <div class="mail-box">
+        <div class="mail-label">Mật khẩu email</div>
+        <div class="mail-value placeholder" id="passwordDisplay">
+          Mật khẩu sẽ hiển thị sau khi nhận email.
         </div>
 
-        <div id="passwordValue" class="data-value empty">
-          Mật khẩu sẽ tự cập nhật theo email
-        </div>
-
-        <button id="copyPasswordBtn" class="btn btn-secondary" type="button" disabled>
+        <button
+          class="copy-button"
+          id="copyPasswordBtn"
+          type="button"
+          disabled
+        >
           Copy mật khẩu
         </button>
       </div>
 
-      <p class="hint">
-        Mỗi lần nhận mail mới sẽ tính một lượt. Copy mật khẩu không làm tăng
-        bộ đếm. Mail đã cấp sẽ không được cấp lại cho người khác.
-      </p>
+      <button class="btn btn-primary" id="copyEmailBtn" type="button">
+        Copy email · Nhận mail mới
+      </button>
 
-      <div id="appNotice" class="notice" role="status"></div>
+      <div class="rules">
+        <strong>Lưu ý</strong><br>
+        • Email được cấp lần lượt theo thứ tự trong danh sách.<br>
+        • Email đã cấp sẽ không được cấp lại.<br>
+        • Đăng xuất không làm email đã nhận quay lại kho.<br>
+        • Khi hết email, hệ thống sẽ dừng cấp mail.
+      </div>
     </section>
 
     <footer class="footer">
-      MAIL VOTE – SH TEAM<br />
-      Keep your account information private.
+      MAIL VOTE – SH TEAM<br>
+      Vui lòng không chia sẻ thông tin đăng nhập của team.
     </footer>
   </main>
 
   <script>
     "use strict";
 
-    // Thông tin public của dự án Supabase.
-    // Không đặt secret/service-role key trong file này.
-    const SUPABASE_URL = "https://ourvsebizerkxkyezeay.supabase.co";
+    const SUPABASE_URL =
+      "https://ourvsebizerkxkyezeay.supabase.co";
+
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_kXy4RCQliWWietdV5jKMYg_latzzh_I";
 
-    const API_URL = `${SUPABASE_URL}/functions/v1/sh-team-login`;
+    const API_URL =
+      `${SUPABASE_URL}/functions/v1/sh-team-login`;
 
-    // Những dữ liệu này được lưu riêng trên trình duyệt hiện tại.
-    const SESSION_KEY = "shteam_session_v1";
-    const PHONE_KEY = "shteam_phone_v1";
-    const MAIL_KEY = "shteam_current_mail_v1";
-    const COUNT_KEY = "shteam_mail_count_v1";
+    const STORAGE = {
+      token: "sh_team_token",
+      phone: "sh_team_phone",
+      mail: "sh_team_current_mail",
+      count: "sh_team_mail_count"
+    };
 
     const $ = (id) => document.getElementById(id);
 
-    let token = localStorage.getItem(SESSION_KEY) || "";
-    let phone = localStorage.getItem(PHONE_KEY) || "";
-    let currentMail = loadCurrentMail();
-    let mailCount = loadCount();
+    let token = localStorage.getItem(STORAGE.token) || "";
+    let phoneNumber = localStorage.getItem(STORAGE.phone) || "";
+    let currentMail = readStoredMail();
+    let mailCount = readStoredCount();
     let busy = false;
 
-    function loadCurrentMail() {
+    function readStoredMail() {
       try {
-        const saved = JSON.parse(localStorage.getItem(MAIL_KEY) || "null");
+        const value = JSON.parse(
+          localStorage.getItem(STORAGE.mail) || "null"
+        );
+
         if (
-          saved &&
-          Number.isSafeInteger(Number(saved.id)) &&
-          typeof saved.email === "string" &&
-          typeof saved.password === "string"
+          value &&
+          typeof value.email === "string" &&
+          typeof value.password === "string"
         ) {
-          return {
-            id: Number(saved.id),
-            email: saved.email,
-            password: saved.password
-          };
+          return value;
         }
       } catch (_) {}
+
       return null;
     }
 
-    function loadCount() {
-      const n = Number(localStorage.getItem(COUNT_KEY) || 0);
-      return Number.isSafeInteger(n) && n >= 0 ? n : 0;
+    function readStoredCount() {
+      const value = Number(localStorage.getItem(STORAGE.count) || 0);
+
+      return Number.isFinite(value) && value >= 0
+        ? Math.floor(value)
+        : 0;
     }
 
     function saveMail() {
       if (currentMail) {
-        localStorage.setItem(MAIL_KEY, JSON.stringify(currentMail));
+        localStorage.setItem(
+          STORAGE.mail,
+          JSON.stringify(currentMail)
+        );
       } else {
-        localStorage.removeItem(MAIL_KEY);
+        localStorage.removeItem(STORAGE.mail);
       }
     }
 
     function saveCount() {
-      localStorage.setItem(COUNT_KEY, String(mailCount));
-      $("counterNumber").textContent = String(mailCount);
+      localStorage.setItem(STORAGE.count, String(mailCount));
     }
 
     function showNotice(id, message, type = "info") {
       const el = $(id);
+
       el.textContent = message;
       el.className = `notice show ${type}`;
     }
 
     function hideNotice(id) {
       const el = $(id);
+
       el.textContent = "";
       el.className = "notice";
     }
 
     function setBusy(value) {
       busy = value;
+
       $("loginBtn").disabled = value;
       $("copyEmailBtn").disabled = value;
       $("copyPasswordBtn").disabled = value || !currentMail;
+      $("copyEmailValueBtn").disabled = value || !currentMail;
       $("logoutBtn").disabled = value;
-      $("loginBtn").textContent = value ? "Đang xử lý..." : "Đăng nhập";
+
+      $("loginBtn").classList.toggle("is-loading", value);
+      $("copyEmailBtn").classList.toggle("is-loading", value);
+
+      $("loginBtn").textContent = value
+        ? "Đang đăng nhập"
+        : "Đăng nhập";
+
       $("copyEmailBtn").textContent = value
-        ? "Đang xử lý..."
+        ? "Đang lấy mail"
         : "Copy email · Nhận mail mới";
     }
 
-    function clearSession() {
-      token = "";
-      phone = "";
-      currentMail = null;
-
-      localStorage.removeItem(SESSION_KEY);
-      localStorage.removeItem(PHONE_KEY);
-      localStorage.removeItem(MAIL_KEY);
-
-      // Cố ý giữ COUNT_KEY: bộ đếm cá nhân không reset khi đăng xuất.
-      render();
-    }
-
     function render() {
-      $("loginView").classList.toggle("hidden", Boolean(token));
-      $("appView").classList.toggle("hidden", !token);
-      $("currentPhone").textContent = phone;
-      $("counterNumber").textContent = String(mailCount);
+      const loggedIn = Boolean(token);
 
-      if (currentMail && token) {
-        $("emailValue").textContent = currentMail.email;
-        $("emailValue").classList.remove("empty");
-        $("passwordValue").textContent = currentMail.password;
-        $("passwordValue").classList.remove("empty");
-        $("mailStatus").textContent = "MAIL ĐÃ NHẬN";
+      $("loginPanel").hidden = loggedIn;
+      $("appPanel").hidden = !loggedIn;
+      $("phoneDisplay").textContent = phoneNumber;
+      $("counterDisplay").textContent = String(mailCount);
+
+      if (currentMail) {
+        $("emailDisplay").textContent = currentMail.email;
+        $("emailDisplay").classList.remove("placeholder");
+
+        $("passwordDisplay").textContent = currentMail.password;
+        $("passwordDisplay").classList.remove("placeholder");
+
+        $("copyEmailValueBtn").hidden = false;
+        $("copyPasswordBtn").disabled = busy;
       } else {
-        $("emailValue").textContent = "Bấm “Copy email” để nhận mail";
-        $("emailValue").classList.add("empty");
-        $("passwordValue").textContent = "Mật khẩu sẽ tự cập nhật theo email";
-        $("passwordValue").classList.add("empty");
-        $("mailStatus").textContent = "CHƯA CÓ MAIL";
+        $("emailDisplay").textContent =
+          "Chưa có email. Bấm nút bên dưới để nhận mail.";
+        $("emailDisplay").classList.add("placeholder");
+
+        $("passwordDisplay").textContent =
+          "Mật khẩu sẽ hiển thị sau khi nhận email.";
+        $("passwordDisplay").classList.add("placeholder");
+
+        $("copyEmailValueBtn").hidden = true;
+        $("copyPasswordBtn").disabled = true;
       }
 
-      $("copyPasswordBtn").disabled = !token || !currentMail || busy;
-      saveCount();
+      $("copyEmailBtn").disabled = busy || !token;
+      $("logoutBtn").disabled = busy;
     }
 
     async function api(action, payload = {}) {
+      const headers = {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_PUBLISHABLE_KEY,
+        "Authorization": `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+      };
+
+      const body = { action, ...payload };
+
+      if (action !== "login" && token) {
+        body.token = token;
+      }
+
       const response = await fetch(API_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_PUBLISHABLE_KEY,
-          "Authorization": `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
-        },
-        body: JSON.stringify({
-          action,
-          ...payload,
-          ...(action === "login" ? {} : { token })
-        })
+        headers,
+        body: JSON.stringify(body)
       });
 
-      let result = {};
+      let result;
+
       try {
         result = await response.json();
-      } catch (_) {}
+      } catch (_) {
+        throw new Error("Máy chủ trả về phản hồi không hợp lệ.");
+      }
 
-      if (!response.ok) {
-        const message = result.error || `Yêu cầu thất bại (${response.status})`;
-
-        if (response.status === 401 && action !== "login") {
-          clearSession();
-          showNotice(
-            "loginNotice",
-            "Phiên đăng nhập không còn hợp lệ. M đăng nhập lại nhé.",
-            "error"
-          );
-        }
-
-        throw new Error(message);
+      if (!response.ok || result.error) {
+        throw new Error(
+          result.error || result.message ||
+          `Yêu cầu thất bại (${response.status}).`
+        );
       }
 
       return result;
     }
 
     async function copyText(value) {
-      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+      if (!value) {
+        throw new Error("Không có nội dung để copy.");
+      }
+
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+        return;
+      }
+
+      const temporary = document.createElement("textarea");
+      temporary.value = value;
+      temporary.setAttribute("readonly", "");
+      temporary.style.position = "fixed";
+      temporary.style.opacity = "0";
+      temporary.style.pointerEvents = "none";
+
+      document.body.appendChild(temporary);
+      temporary.select();
+      temporary.setSelectionRange(0, temporary.value.length);
+
+      const copied = document.execCommand("copy");
+      temporary.remove();
+
+      if (!copied) {
         throw new Error(
-          "Trình duyệt không cho phép tự copy. Hãy mở web bằng HTTPS rồi thử lại."
+          "Trình duyệt không cho phép tự copy. Hãy chọn và copy nội dung đang hiển thị."
         );
       }
-      await navigator.clipboard.writeText(value);
+    }
+
+    function clearSession() {
+      token = "";
+      phoneNumber = "";
+      currentMail = null;
+
+      localStorage.removeItem(STORAGE.token);
+      localStorage.removeItem(STORAGE.phone);
+      localStorage.removeItem(STORAGE.mail);
+
+      // Giữ bộ đếm trên trình duyệt khi đăng xuất.
+      hideNotice("appNotice");
+      hideNotice("loginNotice");
+      render();
     }
 
     $("loginForm").addEventListener("submit", async (event) => {
       event.preventDefault();
+
+      if (busy) return;
+
       hideNotice("loginNotice");
 
-      const enteredPhone = $("phone").value.trim();
-      const teamPassword = $("teamPassword").value;
+      const phone = $("phoneInput").value.trim();
+      const teamPassword = $("teamPasswordInput").value;
+
+      if (!phone || !teamPassword) {
+        showNotice(
+          "loginNotice",
+          "M nhập đầy đủ số điện thoại và mật khẩu team nhé.",
+          "error"
+        );
+        return;
+      }
 
       setBusy(true);
 
       try {
         const result = await api("login", {
-          phone_number: enteredPhone,
+          phone_number: phone,
           team_password: teamPassword
         });
 
         if (!result.token) {
-          throw new Error("Máy chủ không trả về phiên đăng nhập.");
+          throw new Error("Máy chủ chưa trả về phiên đăng nhập.");
         }
 
         token = result.token;
-        phone = result.phone_number || enteredPhone;
+        phoneNumber = result.phone_number || phone;
 
-        localStorage.setItem(SESSION_KEY, token);
-        localStorage.setItem(PHONE_KEY, phone);
+        localStorage.setItem(STORAGE.token, token);
+        localStorage.setItem(STORAGE.phone, phoneNumber);
 
-        // Không mang mail của phiên cũ sang tài khoản mới.
-        currentMail = null;
-        saveMail();
+        // Không xóa mail đã cấp trong database.
+        // Nếu đổi tài khoản trên cùng trình duyệt, bỏ mail hiển thị cũ.
+        const oldPhone = phoneNumber;
+        if (oldPhone !== phone) {
+          currentMail = null;
+          saveMail();
+        }
 
-        $("teamPassword").value = "";
+        $("teamPasswordInput").value = "";
         hideNotice("loginNotice");
         render();
-
-        showNotice("appNotice", "Đăng nhập thành công!", "success");
       } catch (error) {
-        showNotice("loginNotice", error.message, "error");
+        showNotice(
+          "loginNotice",
+          error.message || "Đăng nhập thất bại.",
+          "error"
+        );
       } finally {
         setBusy(false);
         render();
@@ -630,110 +787,115 @@
       setBusy(true);
 
       try {
-        // Mỗi lần bấm sẽ yêu cầu backend cấp một mail mới.
         const result = await api("claim");
 
-        if (!result.mail || !result.mail.email || !result.mail.password) {
-          throw new Error("Máy chủ không trả về email và mật khẩu hợp lệ.");
+        const mail = result.mail || result;
+
+        if (
+          mail.id == null ||
+          typeof mail.email !== "string" ||
+          typeof mail.password !== "string"
+        ) {
+          throw new Error(
+            "Máy chủ không trả về email và mật khẩu hợp lệ."
+          );
         }
 
         currentMail = {
-          id: Number(result.mail.id),
-          email: result.mail.email,
-          password: result.mail.password
+          id: Number(mail.id),
+          email: mail.email,
+          password: mail.password
         };
 
-        // Lưu mail hiện tại để đóng/mở lại web vẫn hiển thị đúng cặp.
         saveMail();
 
-        // Đếm lượt nhận mail mới trên trình duyệt này.
         mailCount += 1;
         saveCount();
+
         render();
 
-        let copied = false;
         try {
           await copyText(currentMail.email);
-          copied = true;
-        } catch (_) {
-          copied = false;
-        }
 
-        if (copied) {
-          showNotice("appNotice", "Đã copy email mới. Mật khẩu đã được cập nhật theo mail này.", "success");
-
-          // Ghi lịch sử thao tác copy trên Supabase.
-          try {
-            await api("log", {
-              mail_id: currentMail.id,
-              copy_action: "email_copied"
-            });
-          } catch (error) {
-            console.error("Không ghi được lịch sử copy email:", error);
-          }
-        } else {
           showNotice(
             "appNotice",
-            "Đã nhận mail và cập nhật bộ đếm, nhưng trình duyệt không tự copy được. M có thể chọn và copy email đang hiển thị.",
+            "Đã nhận mail mới và copy email. Mật khẩu đã được cập nhật theo mail này.",
+            "success"
+          );
+        } catch (_) {
+          showNotice(
+            "appNotice",
+            "Mail đã được cấp và hiển thị. Trình duyệt chưa tự copy được; m có thể copy email đang hiển thị.",
             "info"
           );
         }
       } catch (error) {
-        if (token) {
-          showNotice("appNotice", error.message, "error");
+        const message = error.message || "Không thể nhận mail.";
+
+        if (/no mail|no available|out of mail|hết mail|không còn mail/i.test(message)) {
+          showNotice(
+            "appNotice",
+            "Kho mail đã hết. Hệ thống sẽ không quay lại cấp các mail cũ.",
+            "info"
+          );
+        } else {
+          showNotice("appNotice", message, "error");
         }
       } finally {
         setBusy(false);
         render();
+      }
+    });
+
+    $("copyEmailValueBtn").addEventListener("click", async () => {
+      if (!currentMail || busy) return;
+
+      try {
+        await copyText(currentMail.email);
+        showNotice("appNotice", "Đã copy email đang hiển thị.", "success");
+      } catch (error) {
+        showNotice("appNotice", error.message, "error");
       }
     });
 
     $("copyPasswordBtn").addEventListener("click", async () => {
       if (!token || !currentMail || busy) return;
 
-      hideNotice("appNotice");
-      setBusy(true);
-
       try {
-        // Kiểm tra phiên và ghi lịch sử trước khi copy mật khẩu.
-        await api("log", {
-          mail_id: currentMail.id,
-          copy_action: "password_copied"
-        });
-
         await copyText(currentMail.password);
-        showNotice("appNotice", "Đã copy mật khẩu của đúng email đang hiển thị.", "success");
+
+        showNotice(
+          "appNotice",
+          "Đã copy mật khẩu của đúng email đang hiển thị.",
+          "success"
+        );
       } catch (error) {
-        if (token) {
-          showNotice("appNotice", error.message, "error");
-        }
-      } finally {
-        setBusy(false);
-        render();
+        showNotice("appNotice", error.message, "error");
       }
     });
 
     $("logoutBtn").addEventListener("click", async () => {
       if (busy) return;
 
+      const oldToken = token;
       setBusy(true);
-      let logoutMessage = "Đã đăng xuất.";
 
       try {
         await api("logout");
-      } catch (error) {
-        logoutMessage =
-          "Đã xóa phiên trên trình duyệt. Nếu mất kết nối, phiên máy chủ có thể chưa được thu hồi.";
+      } catch (_) {
+        // Vẫn xóa phiên ở trình duyệt.
+        // Nếu server chưa thu hồi phiên, cần kiểm tra Edge Function.
       } finally {
-        clearSession();
+        if (token === oldToken) {
+          clearSession();
+        }
+
         setBusy(false);
         render();
-        showNotice("loginNotice", logoutMessage, "info");
       }
     });
 
-    // Khôi phục giao diện từ phiên đã lưu khi mở lại trang.
-    // Phiên được máy chủ kiểm tra khi thực hiện thao tác tiếp theo.
+    // Khôi phục giao diện khi tải lại trang.
     render();
   </script>
 </body>
