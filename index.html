@@ -277,7 +277,7 @@ function showReward(step){
   $("rewardFinalNote").hidden=true;
   $("rewardSub").hidden=false;
   $("rewardFinalTitle").textContent="NOONA SARANGHAE";
-  $("rewardMessage").textContent=step===100?`EM CHÍP CẢM ƠN XỊ + ${personName}`:step===500?`EM LÚM YÊU XỊ + ${personName}`:"";
+  $("rewardMessage").textContent=step===100?`EM CHÍP CẢM ƠN XỊ ${personName}`:step===500?`EM LÚM YÊU XỊ ${personName}`:"";
   $("rewardSub").textContent=step===100?"Một chiếc ôm thật to dành cho bạn 💗":step===500?"Cảm ơn vì đã cùng nhau đi đến đây ✨":"The sweetest surprise is finally here.";
   overlay.classList.add("is-visible");
   overlay.setAttribute("aria-hidden","false");
@@ -427,14 +427,18 @@ async function api(action,payload={}){
 }
 async function copyText(value){
   if(typeof value!=="string"||!value.length)throw new Error("Không có nội dung để copy.");
+  // Clipboard API là đường chính trên HTTPS; nếu bị trình duyệt từ chối thì thử fallback ngay.
   if(navigator.clipboard&&window.isSecureContext){
-    await navigator.clipboard.writeText(value);return;
+    try{await navigator.clipboard.writeText(value);return}
+    catch(_){/* tiếp tục bằng execCommand */}
   }
   const el=document.createElement("textarea");
   el.value=value;el.setAttribute("readonly","");
-  el.style.cssText="position:fixed;left:-9999px;top:0;opacity:0;font-size:16px";
-  document.body.appendChild(el);el.focus();el.select();el.setSelectionRange(0,value.length);
-  const ok=document.execCommand("copy");el.remove();
+  el.style.cssText="position:fixed;left:0;top:0;width:1px;height:1px;padding:0;border:0;opacity:0;font-size:16px";
+  document.body.appendChild(el);
+  el.focus({preventScroll:true});el.select();
+  let ok=false;
+  try{ok=document.execCommand("copy")}finally{el.remove()}
   if(!ok)throw new Error("Trình duyệt chặn copy tự động. M hãy copy thủ công nội dung đang hiển thị nhé.");
 }
 function clearSession(){
@@ -493,12 +497,12 @@ $("copyEmailBtn").addEventListener("click",async()=>{
 
 $("copyEmailValueBtn").addEventListener("click",async()=>{
   if(!currentMail?.email){showNotice("appNotice","Chưa có email để copy.","error");return}
-  try{await copyText(currentMail.email);launchFireworks();showNotice("appNotice","Đã copy email đang hiển thị.","success")}
+  try{await copyText(currentMail.email);showNotice("appNotice","Đã copy email đang hiển thị.","success")}
   catch(error){showNotice("appNotice",error.message,"error")}
 });
 $("copyPasswordBtn").addEventListener("click",async()=>{
   if(!currentMail||!currentMail.password){showNotice("appNotice","Chưa có mật khẩu để copy.","error");return}
-  try{await copyText(currentMail.password);launchFireworks();showNotice("appNotice","Đã copy mật khẩu!","success")}
+  try{await copyText(currentMail.password);showNotice("appNotice","Đã copy mật khẩu!","success")}
   catch(error){showNotice("appNotice",error.message,"error")}
 });
 $("logoutBtn").addEventListener("click",async()=>{
