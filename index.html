@@ -274,6 +274,14 @@ input, button, textarea, select { font: inherit; }
   .journey-status { font-size: 7px; }
 }
 
+/* COPY CELEBRATION — warm golden fireworks and floating fan messages */
+.copy-firework{position:fixed;z-index:90;left:0;top:0;width:0;height:0;pointer-events:none}
+.copy-firework i{position:absolute;left:0;top:0;font-style:normal;color:#ffd76a;font-size:var(--fs,18px);font-weight:900;text-shadow:0 0 5px #fff3b0,0 0 13px #ffbf38,0 0 24px #ffdf83;animation:goldBurst 1.25s cubic-bezier(.12,.72,.2,1) forwards;animation-delay:var(--delay,0s)}
+@keyframes goldBurst{0%{opacity:0;transform:translate(0,0) scale(.15) rotate(0)}12%{opacity:1}68%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.25) rotate(var(--rot,160deg))}}
+.copy-love{position:fixed;z-index:89;pointer-events:none;left:var(--x);top:var(--y);font-weight:900;font-size:clamp(13px,2vw,20px);letter-spacing:.2px;color:#e8ad35;text-shadow:0 1px 0 #fff,0 0 9px #fff1b8,0 0 19px #ffd86a;white-space:nowrap;animation:loveRise 2.8s ease-out forwards}
+@keyframes loveRise{0%{opacity:0;transform:translate(-50%,12px) scale(.72) rotate(var(--tilt))}14%{opacity:1}72%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--drift)), -95px) scale(1.08) rotate(var(--tilt))}}
+@media(prefers-reduced-motion:reduce){.copy-firework i,.copy-love{animation-duration:.01ms!important}}
+
 </style>
 </head>
 <body>
@@ -691,15 +699,41 @@ async function copyText(value){
   try{ok=document.execCommand("copy")}finally{el.remove()}
   if(!ok)throw new Error("Trình duyệt không cho phép sao chép tự động. Vui lòng sao chép thủ công nội dung đang hiển thị.");
 }
-// Snowflake bloom when a copy action succeeds.
-function snowflakeBloom(origin){
+// Golden fireworks bloom from the clicked copy button; fan messages float across the page.
+function copyCelebration(origin){
   const rect=origin?.getBoundingClientRect?.();
   const x=rect?rect.left+rect.width/2:window.innerWidth/2;
   const y=rect?rect.top+rect.height/2:window.innerHeight/2;
-  const wrap=document.createElement("span");wrap.className="snow-bloom";wrap.style.left=x+"px";wrap.style.top=y+"px";
-  const symbols=["❄","✧","❅","✦","❄","❆","✧","❄","✧","❅","✦","❆","❄","✧","❅","✦","❄","✧"];
-  symbols.forEach((symbol,i)=>{const bit=document.createElement("i");bit.textContent=symbol;const angle=(Math.PI*2*i)/symbols.length+(Math.random()-.5)*.16;const distance=54+Math.random()*58;bit.style.setProperty("--dx",Math.cos(angle)*distance+"px");bit.style.setProperty("--dy",Math.sin(angle)*distance-18+"px");bit.style.animationDelay=(Math.random()*.12)+"s";bit.style.fontSize=(14+Math.random()*13)+"px";wrap.appendChild(bit)});
-  document.body.appendChild(wrap);window.setTimeout(()=>wrap.remove(),1650);
+  const golds=["✦","✧","✺","✹","✴","★","✦","❋"];
+  function burst(cx,cy,count=30,spread=105){
+    const wrap=document.createElement("span");wrap.className="copy-firework";wrap.style.left=cx+"px";wrap.style.top=cy+"px";
+    for(let i=0;i<count;i++){
+      const bit=document.createElement("i");bit.textContent=golds[Math.floor(Math.random()*golds.length)];
+      const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.22;
+      const distance=spread*(.48+Math.random()*.72);
+      bit.style.setProperty("--dx",Math.cos(angle)*distance+"px");
+      bit.style.setProperty("--dy",Math.sin(angle)*distance-20+"px");
+      bit.style.setProperty("--rot",(Math.random()*360-180)+"deg");
+      bit.style.setProperty("--fs",(13+Math.random()*17)+"px");
+      bit.style.setProperty("--delay",(Math.random()*.16)+"s");wrap.appendChild(bit);
+    }
+    document.body.appendChild(wrap);window.setTimeout(()=>wrap.remove(),1650);
+  }
+  // A dense burst directly from the button, followed by two softer background bursts.
+  burst(x,y,38,112);
+  window.setTimeout(()=>burst(Math.max(45,Math.min(innerWidth-45,x+(Math.random()-.5)*innerWidth*.42)),Math.max(75,Math.min(innerHeight-70,y-65)),24,78),110);
+  window.setTimeout(()=>burst(Math.max(45,Math.min(innerWidth-45,x+(Math.random()-.5)*innerWidth*.5)),Math.max(75,Math.min(innerHeight-70,y+45)),20,70),230);
+  const messages=["i love you","Nonna saranghae","Xị ơi cố lên","Seonghyeon boom","Seonghyeon on top 1","ACE EOM","Em Lúm yêu xị"];
+  messages.forEach((message,index)=>{
+    window.setTimeout(()=>{
+      const el=document.createElement("span");el.className="copy-love";el.textContent=message;
+      el.style.setProperty("--x",(8+Math.random()*84)+"vw");
+      el.style.setProperty("--y",(20+Math.random()*62)+"vh");
+      el.style.setProperty("--drift",(Math.random()*100-50)+"px");
+      el.style.setProperty("--tilt",(Math.random()*12-6)+"deg");
+      document.body.appendChild(el);window.setTimeout(()=>el.remove(),3000);
+    },index*105);
+  });
 }
 
 // Original, softly synthesized winter lullaby; starts only after the visitor taps the music button.
@@ -759,10 +793,9 @@ $("copyEmailBtn").addEventListener("click",async()=>{
     currentMail={id:Number(mail.id),email:mail.email,password:mail.password};
     saveMail();mailCount+=1;saveCount();render();
     queueReachedRewards();
-    launchFireworks();
     try{
       await copyText(currentMail.email);
-      snowflakeBloom($("copyEmailBtn"));
+      copyCelebration($("copyEmailBtn"));
       showNotice("appNotice","Đã nhận mail mới và copy email. Mật khẩu đã được cập nhật theo mail này.","success");
     }catch(_){
       showNotice("appNotice","Email đã được cấp và hiển thị. Trình duyệt chưa thể sao chép tự động; bạn có thể sao chép email đang hiển thị.","info");
@@ -777,12 +810,12 @@ $("copyEmailBtn").addEventListener("click",async()=>{
 
 $("copyEmailValueBtn").addEventListener("click",async()=>{
   if(!currentMail?.email){showNotice("appNotice","Chưa có email để copy.","error");return}
-  try{await copyText(currentMail.email);snowflakeBloom($("copyEmailValueBtn"));showNotice("appNotice","Đã copy email đang hiển thị.","success")}
+  try{await copyText(currentMail.email);copyCelebration($("copyEmailValueBtn"));showNotice("appNotice","Đã copy email đang hiển thị.","success")}
   catch(error){showNotice("appNotice",error.message,"error")}
 });
 $("copyPasswordBtn").addEventListener("click",async()=>{
   if(!currentMail||!currentMail.password){showNotice("appNotice","Chưa có mật khẩu để copy.","error");return}
-  try{await copyText(currentMail.password);snowflakeBloom($("copyPasswordBtn"));showNotice("appNotice","Đã copy mật khẩu!","success")}
+  try{await copyText(currentMail.password);copyCelebration($("copyPasswordBtn"));showNotice("appNotice","Đã copy mật khẩu!","success")}
   catch(error){showNotice("appNotice",error.message,"error")}
 });
 $("logoutBtn").addEventListener("click",async()=>{
@@ -801,6 +834,8 @@ document.addEventListener("visibilitychange", () => {
 
 render();
 if(token&&rewardState.pending.length)window.setTimeout(processRewardQueue,250);
+
+
 
 /* Winter canvas: falling snow, vote-based snowdrift and sparkling snowflakes blooming along the pointer. */
 (() => {
