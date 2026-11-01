@@ -512,6 +512,31 @@ input, button, textarea, select { font: inherit; }
   border:0!important;opacity:1!important;
 }
 
+
+/* TEAM LEADERBOARD — added without changing the existing winter theme */
+.leaderboard{margin:0 0 17px;padding:17px;border:1px solid #dcebf3;border-radius:21px;background:linear-gradient(145deg,#fff,#f4faff);box-shadow:0 8px 22px #9ebfd01c}
+.leaderboard-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+.leaderboard-title{font-size:14px;font-weight:850;letter-spacing:.2px;color:#628da8}
+.leaderboard-refresh{flex-shrink:0;padding:7px 10px;border:1px solid #d7e8f1;border-radius:11px;background:#f5fbff;color:#6d96ae;font-size:11px}
+.leaderboard-state{margin:0 0 10px;color:#91a7b5;font-size:11px;line-height:1.5}
+.leaderboard-list{display:grid;gap:7px}
+.leaderboard-row{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:9px;padding:9px 10px;border:1px solid #e6eff4;border-radius:13px;background:#fbfdff}
+.leaderboard-rank{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:#edf6fb;color:#6c9bb8;font-size:11px;font-weight:900}
+.leaderboard-row:nth-child(1) .leaderboard-rank{background:#fff3d9;color:#b58a3e}
+.leaderboard-row:nth-child(2) .leaderboard-rank{background:#f0f2f6;color:#7d8999}
+.leaderboard-row:nth-child(3) .leaderboard-rank{background:#f9e9df;color:#b77d5c}
+.leaderboard-name{min-width:0;overflow-wrap:anywhere;color:#58778d;font-size:12px;font-weight:750}
+.leaderboard-claims{white-space:nowrap;color:#79a7c1;font-size:11px;font-weight:850;font-variant-numeric:tabular-nums}
+.leaderboard-empty{padding:13px;text-align:center;color:#9aafbd;font-size:11px}
+.leaderboard-me{margin-top:12px;padding:12px 13px;border:1px solid #dcebf3;border-radius:14px;background:linear-gradient(120deg,#f0f8fc,#fff8fb)}
+.leaderboard-me-label{color:#83a0b2;font-size:9px;font-weight:850;letter-spacing:1px}
+.leaderboard-me-main{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:5px}
+.leaderboard-me-rank{color:#648eaa;font-size:18px;font-weight:900}
+.leaderboard-me-claims{color:#8aa8ba;font-size:11px;font-weight:750}
+.leaderboard-error{color:#b66c7d}
+.leaderboard-loading{opacity:.72}
+@media(max-width:380px){.leaderboard{padding:14px}.leaderboard-row{gap:7px;padding:8px}}
+
 </style>
 </head>
 <body>
@@ -541,6 +566,22 @@ input, button, textarea, select { font: inherit; }
 <div class="topbar"><div><h2>Khu vực bình chọn</h2><div class="user-label">Đang đăng nhập: <strong id="nameDisplay"></strong></div></div><button class="logout" id="logoutBtn" type="button">Đăng xuất</button></div>
 <div class="notice" id="appNotice" role="status"></div>
 <div class="counter"><div class="counter-label">TOTAL EMAILS RECEIVED</div><div class="counter-number" id="counterDisplay">0</div><div class="counter-note">Số email đã nhận trên trình duyệt này</div></div>
+
+<section aria-label="Bảng xếp hạng thành viên" class="leaderboard" id="leaderboardPanel">
+  <div class="leaderboard-head">
+    <div class="leaderboard-title">🏆 BẢNG XẾP HẠNG TEAM</div>
+    <button class="leaderboard-refresh" id="leaderboardRefreshBtn" type="button">↻ Làm mới</button>
+  </div>
+  <p aria-live="polite" class="leaderboard-state" id="leaderboardState">Đang tải bảng xếp hạng...</p>
+  <div class="leaderboard-list" id="leaderboardList"></div>
+  <div class="leaderboard-me" id="leaderboardMe" hidden>
+    <div class="leaderboard-me-label">THÀNH TÍCH CỦA BẠN</div>
+    <div class="leaderboard-me-main">
+      <div class="leaderboard-me-rank" id="leaderboardMeRank">—</div>
+      <div class="leaderboard-me-claims" id="leaderboardMeClaims">0 lượt nhận</div>
+    </div>
+  </div>
+</section>
 <section aria-label="Little Mystery Journey" class="journey">
 <div class="journey-head">
 <div><div class="journey-title">LITTLE WINTER JOURNEY</div><div class="journey-caption">Mỗi lượt vote, tuyết lại phủ dày thêm một chút 🐥</div></div>
@@ -611,6 +652,8 @@ let personName = localStorage.getItem(STORAGE.name) || "";
 let currentMail = readStoredMail();
 let mailCount = readStoredCount();
 let busy = false;
+let leaderboardLoading = false;
+let leaderboardRequestId = 0;
 
 function readStoredMail(){
   try{
@@ -893,10 +936,91 @@ function setBusy(value){
   $("loginBtn").textContent=value?"Đang đăng nhập":"Đăng nhập ✨";
   $("copyEmailBtn").textContent=value?"Đang lấy mail":"🐥 Copy email · Nhận mail mới";
 }
+
+function clearLeaderboard(){
+  leaderboardRequestId++;
+  leaderboardLoading=false;
+  $("leaderboardState").textContent="Đăng nhập để xem bảng xếp hạng.";
+  $("leaderboardState").className="leaderboard-state";
+  $("leaderboardList").replaceChildren();
+  $("leaderboardMe").hidden=true;
+  $("leaderboardMeRank").textContent="—";
+  $("leaderboardMeClaims").textContent="0 lượt nhận";
+  $("leaderboardRefreshBtn").disabled=true;
+}
+function renderLeaderboard(data){
+  const rows=Array.isArray(data?.leaderboard)?data.leaderboard.slice(0,10):[];
+  const me=data?.me&&typeof data.me==="object"?data.me:null;
+  const list=$("leaderboardList");
+  list.replaceChildren();
+  if(rows.length){
+    rows.forEach((item,index)=>{
+      const row=document.createElement("div");
+      row.className="leaderboard-row";
+      const rank=document.createElement("span");
+      rank.className="leaderboard-rank";
+      rank.textContent=String(Number(item.rank)||index+1);
+      const name=document.createElement("span");
+      name.className="leaderboard-name";
+      name.textContent=typeof item.name==="string"&&item.name.trim()?item.name:"Thành viên";
+      const claims=document.createElement("span");
+      claims.className="leaderboard-claims";
+      claims.textContent=`${Math.max(0,Number(item.claims)||0)} lượt`;
+      row.append(rank,name,claims);
+      list.appendChild(row);
+    });
+    $("leaderboardState").textContent="TOP 10 thành viên có số lượt nhận mail cao nhất.";
+    $("leaderboardState").className="leaderboard-state";
+  }else{
+    const empty=document.createElement("div");
+    empty.className="leaderboard-empty";
+    empty.textContent="Chưa có dữ liệu xếp hạng.";
+    list.appendChild(empty);
+    $("leaderboardState").textContent="Bảng xếp hạng hiện chưa có dữ liệu.";
+    $("leaderboardState").className="leaderboard-state";
+  }
+  if(me){
+    $("leaderboardMe").hidden=false;
+    const inTop10=me.in_top10===true;
+    const rank=Number(me.rank);
+    const band=typeof me.rank_band==="string"&&me.rank_band?me.rank_band:null;
+    $("leaderboardMeRank").textContent=inTop10&&Number.isFinite(rank)&&rank>0
+      ?`Hạng ${rank}`:(band||"Chưa có hạng");
+    $("leaderboardMeClaims").textContent=`${Math.max(0,Number(me.claims)||0)} lượt nhận`;
+  }else{
+    $("leaderboardMe").hidden=true;
+  }
+}
+async function loadLeaderboard(){
+  if(!token){clearLeaderboard();return}
+  const requestId=++leaderboardRequestId;
+  leaderboardLoading=true;
+  $("leaderboardRefreshBtn").disabled=true;
+  $("leaderboardState").textContent="Đang cập nhật bảng xếp hạng...";
+  $("leaderboardState").className="leaderboard-state leaderboard-loading";
+  try{
+    const result=await api("leaderboard");
+    if(requestId!==leaderboardRequestId||!token)return;
+    renderLeaderboard(result);
+  }catch(error){
+    if(requestId!==leaderboardRequestId)return;
+    $("leaderboardList").replaceChildren();
+    $("leaderboardMe").hidden=true;
+    $("leaderboardState").textContent="Chưa thể tải bảng xếp hạng. Bạn vẫn có thể tiếp tục nhận mail và thử làm mới sau.";
+    $("leaderboardState").className="leaderboard-state leaderboard-error";
+  }finally{
+    if(requestId===leaderboardRequestId){
+      leaderboardLoading=false;
+      $("leaderboardRefreshBtn").disabled=!token;
+    }
+  }
+}
+
 function render(){
   const loggedIn=Boolean(token);
   $("loginPanel").hidden=loggedIn;
   $("appPanel").hidden=!loggedIn;
+  $("leaderboardRefreshBtn").disabled=!loggedIn||leaderboardLoading;
   $("nameDisplay").textContent=personName;
   $("counterDisplay").textContent=String(mailCount);
   renderRewards();
@@ -1078,7 +1202,7 @@ function clearSession(){
   localStorage.removeItem(STORAGE.name);
   localStorage.removeItem(STORAGE.phone);
   localStorage.removeItem(STORAGE.mail);
-  hideNotice("appNotice");hideNotice("loginNotice");render();
+  hideNotice("appNotice");hideNotice("loginNotice");clearLeaderboard();render();
 }
 
 $("loginForm").addEventListener("submit",async event=>{
@@ -1096,6 +1220,7 @@ $("loginForm").addEventListener("submit",async event=>{
     localStorage.setItem(STORAGE.token,token);localStorage.setItem(STORAGE.name,personName);localStorage.setItem(STORAGE.phone,phoneNumber);
     if(previousPhone&&previousPhone!==phoneNumber){currentMail=null;saveMail()}
     $("teamPasswordInput").value="";hideNotice("loginNotice");render();
+    loadLeaderboard();
   }catch(error){showNotice("loginNotice",error.message||"Đăng nhập thất bại.","error")}
   finally{setBusy(false);render()}
 });
@@ -1110,6 +1235,7 @@ $("copyEmailBtn").addEventListener("click",async()=>{
       throw new Error("Máy chủ không trả về email và mật khẩu hợp lệ.");
     currentMail={id:Number(mail.id),email:mail.email,password:mail.password};
     saveMail();mailCount+=1;saveCount();render();
+    loadLeaderboard();
     queueReachedRewards();
     try{
       await copyText(currentMail.email);
@@ -1136,6 +1262,8 @@ $("copyPasswordBtn").addEventListener("click",async()=>{
   try{await copyText(currentMail.password);copyCelebration($("copyPasswordBtn"));showNotice("appNotice","Đã copy mật khẩu!","success")}
   catch(error){showNotice("appNotice",error.message,"error")}
 });
+$("leaderboardRefreshBtn").addEventListener("click",()=>{if(token&&!leaderboardLoading)loadLeaderboard()});
+
 $("logoutBtn").addEventListener("click",async()=>{
   if(busy)return;
   const oldToken=token;setBusy(true);
@@ -1151,6 +1279,7 @@ document.addEventListener("visibilitychange", () => {
 });
 
 render();
+if(token)loadLeaderboard();
 if(token&&rewardState.pending.length)window.setTimeout(processRewardQueue,250);
 
 
