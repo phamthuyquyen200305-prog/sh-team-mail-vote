@@ -200,6 +200,73 @@ function readStoredCount(){
   return Number.isFinite(n)&&n>=0?Math.floor(n):0;
 }
 
+// Bộ đếm theo ngày: tự reset lúc 22:00 theo múi giờ Việt Nam.
+const DAILY_COUNTER_KEY = "sh_team_counter_day_vn";
+let dailyResetTimer = null;
+
+function vietnamDateParts(date = new Date()){
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(date);
+  return Object.fromEntries(parts.map(part => [part.type, part.value]));
+}
+
+function getVietnamCounterDay(date = new Date()){
+  const p = vietnamDateParts(date);
+  let year = Number(p.year), month = Number(p.month), day = Number(p.day);
+  if (Number(p.hour) < 22) {
+    const previous = new Date(Date.UTC(year, month - 1, day) - 86400000);
+    year = previous.getUTCFullYear();
+    month = previous.getUTCMonth() + 1;
+    day = previous.getUTCDate();
+  }
+  return `${year}-${String(month).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+}
+
+function msUntilNextVietnamReset(){
+  const p = vietnamDateParts();
+  const year = Number(p.year), month = Number(p.month), day = Number(p.day);
+  const hour = Number(p.hour);
+  const targetUtc = Date.UTC(year, month - 1, day, 15, 0, 0, 0)
+    + (hour >= 22 ? 86400000 : 0);
+  return Math.max(1000, targetUtc - Date.now());
+}
+
+function resetDailyCounter(){
+  mailCount = 0;
+  saveCount();
+  rewardState = {
+    unlocked: {100:false, 500:false, 1000:false},
+    pending: []
+  };
+  saveRewardState();
+  // Chỉ reset bộ đếm và mốc thưởng; giữ nguyên mail đang hiển thị/đã nhận.
+  if (rewardActive) closeReward();
+  render();
+}
+
+function checkDailyCounterReset(){
+  const currentDay = getVietnamCounterDay();
+  const savedDay = localStorage.getItem(DAILY_COUNTER_KEY);
+  if (savedDay !== currentDay) {
+    localStorage.setItem(DAILY_COUNTER_KEY, currentDay);
+    resetDailyCounter();
+  }
+}
+
+function scheduleDailyCounterReset(){
+  if (dailyResetTimer !== null) clearTimeout(dailyResetTimer);
+  dailyResetTimer = window.setTimeout(() => {
+    checkDailyCounterReset();
+    scheduleDailyCounterReset();
+  }, msUntilNextVietnamReset() + 250);
+}
+
 function readRewardState(){
   const empty={unlocked:{100:false,500:false,1000:false},pending:[]};
   try{
@@ -510,6 +577,14 @@ $("logoutBtn").addEventListener("click",async()=>{
   try{await api("logout")}catch(_){}
   finally{if(token===oldToken)clearSession();setBusy(false);render()}
 });
+// Kiểm tra bộ đếm khi mở trang và tự hẹn giờ reset lúc 22:00 mỗi ngày.
+checkDailyCounterReset();
+scheduleDailyCounterReset();
+window.addEventListener("focus", checkDailyCounterReset);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) checkDailyCounterReset();
+});
+
 render();
 if(token&&rewardState.pending.length)window.setTimeout(processRewardQueue,250);
 
