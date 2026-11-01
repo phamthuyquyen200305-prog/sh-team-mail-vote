@@ -135,15 +135,15 @@ input:focus{border-color:#79aacb;box-shadow:0 0 0 3px #79aacb26}
 .reward-dialog.reward-100{border-color:#c7e3f2;box-shadow:0 0 28px #a9d3e866,0 24px 80px #29445b33}.reward-dialog.reward-500{border-color:#e8c8d4;box-shadow:0 0 38px #e8b9ca88,0 24px 80px #29445b33}.reward-dialog.reward-1000{border-color:#b7d8e9;box-shadow:0 0 55px #a9d4ec99,0 24px 90px #29445b44}
 .reward-close{border-color:#b9d3e4;background:#eaf5fc;color:#42647d}.reward-eyebrow{color:#648da8}.reward-pumpkin{filter:drop-shadow(0 0 14px #9fcce5)}.reward-message{background:linear-gradient(100deg,#568db3,#7bb8d1,#d28da7);background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:none}.reward-sub{color:#69859a}.reward-final-title{background:linear-gradient(100deg,#568db3,#83bfd5 48%,#d28da7);background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 0 25px #a9d4ec66}.love-cloud span{border-color:#c8ddec;background:#f2f9fd;color:#648aa4}.reward-close-cta{background:linear-gradient(110deg,#75a9ce,#91c5dc 55%,#e5a9bc);color:white}
 .snowman{position:fixed;z-index:0;left:max(10px,calc((100vw - 900px)/2));bottom:10px;font-size:clamp(44px,8vw,82px);filter:drop-shadow(0 5px 5px #7197ae44);pointer-events:none;user-select:none;opacity:.9}
-.winter-parade{position:fixed;z-index:12;left:0;bottom:15px;display:flex;align-items:flex-end;gap:8px;font-size:clamp(34px,6vw,58px);pointer-events:none;opacity:0;white-space:nowrap;visibility:hidden;filter:drop-shadow(0 7px 5px #729bb533)}
+.winter-parade{position:fixed;z-index:12;left:0;bottom:15px;display:flex;flex-direction:row;align-items:flex-end;gap:2px;font-size:clamp(34px,6vw,58px);pointer-events:none;opacity:0;white-space:nowrap;visibility:hidden;filter:drop-shadow(0 7px 5px #729bb533);will-change:transform}
 .winter-parade.is-running{visibility:visible;animation:paradeAcross 11s cubic-bezier(.22,.65,.3,1) both}
-.parade-fox{display:inline-block;transform-origin:50% 90%;animation:foxTrot .42s ease-in-out infinite alternate}
-.parade-ducks{display:flex;align-items:flex-end;gap:0;font-size:.72em;letter-spacing:0}
-.parade-ducks span{display:inline-block;margin-left:-5px;transform-origin:50% 90%;animation:duckWaddle .32s ease-in-out infinite alternate}
-.parade-ducks span:nth-child(2n){animation-delay:.12s}.parade-ducks span:nth-child(3n){animation-delay:.2s}
-@keyframes paradeAcross{0%{transform:translateX(-25vw);opacity:0}7%{opacity:1}92%{opacity:1}100%{transform:translateX(110vw);opacity:0}}
-@keyframes foxTrot{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-7px) rotate(3deg)}}
-@keyframes duckWaddle{from{transform:translateY(0) rotate(-7deg)}to{transform:translateY(-5px) rotate(8deg)}}
+.parade-fox{position:relative;z-index:2;display:inline-block;flex:0 0 auto;transform-origin:50% 90%;animation:foxRun .34s ease-in-out infinite alternate}
+.parade-ducks{display:flex;flex-direction:row;align-items:flex-end;gap:0;font-size:.72em;letter-spacing:0}
+.parade-ducks span{display:inline-block;flex:0 0 auto;margin-left:-5px;transform-origin:50% 90%;animation:duckWaddle .3s ease-in-out infinite alternate}
+.parade-ducks span:nth-child(2n){animation-delay:-.11s}.parade-ducks span:nth-child(3n){animation-delay:-.2s}.parade-ducks span:nth-child(4n){animation-delay:-.06s}
+@keyframes paradeAcross{0%{transform:translateX(-30vw);opacity:0}7%{opacity:1}92%{opacity:1}100%{transform:translateX(110vw);opacity:0}}
+@keyframes foxRun{0%{transform:translateY(1px) rotate(-5deg) scaleX(1)}45%{transform:translateY(-8px) rotate(2deg) scaleX(1.025)}100%{transform:translateY(0) rotate(5deg) scaleX(.98)}}
+@keyframes duckWaddle{0%{transform:translateY(1px) rotate(-9deg) scaleX(.97)}48%{transform:translateY(-5px) rotate(2deg) scaleX(1.02)}100%{transform:translateY(0) rotate(9deg) scaleX(.98)}}
 @media(max-width:600px){.snowman{left:5px;bottom:4px;font-size:48px}.winter-parade{bottom:8px}}
 @media(prefers-reduced-motion:reduce){.winter-parade.is-running{animation:none;left:12px;opacity:1;visibility:visible}.parade-fox,.parade-ducks span{animation:none}}
 
@@ -518,7 +518,7 @@ input, button, textarea, select { font: inherit; }
 <canvas aria-hidden="true" id="magicCanvas"></canvas>
 <canvas aria-hidden="true" id="milestoneRainCanvas"></canvas>
 <div aria-hidden="true" class="snowman">⛄</div>
-<div aria-hidden="true" class="winter-parade" id="winterParade"><span class="parade-ducks"><span>🐥</span><span>🐥</span><span>🐥</span><span>🐥</span><span>🐥</span><span>🐥</span></span><span class="parade-fox">🦊</span></div>
+<div aria-hidden="true" class="winter-parade" id="winterParade"><span class="parade-fox">🦊</span><span class="parade-ducks"><span>🐥</span><span>🐥</span><span>🐥</span><span>🐥</span><span>🐥</span><span>🐥</span></span></div>
 <button aria-pressed="false" class="music-toggle" id="musicToggle" title="Bật/tắt nhạc mùa đông" type="button">♫ Nhạc mùa đông: Tắt</button>
 <div class="youtube-music-panel" hidden="" id="youtubeMusicPanel"><div class="youtube-music-head"><span>♪ Winter playlist</span><button aria-label="Đóng trình phát" id="closeYoutubeMusic" type="button">×</button></div><div id="youtubePlayerMount"></div><p>Nhạc được phát từ YouTube</p></div>
 <main class="shell">
@@ -1159,21 +1159,32 @@ if(token&&rewardState.pending.length)window.setTimeout(processRewardQueue,250);
 (() => {
   const canvas=$("magicCanvas"),ctx=canvas.getContext("2d",{alpha:true});
   const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let w=0,h=0,dpr=1,raf=0,lastFrame=0,lastPointer=0;
+  const desktopPointer=window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  let w=0,h=0,dpr=1,raf=0,lastFrame=0,lastPointer=0,lastPointerX=null,lastPointerY=null,cursorFlakeIndex=0;
   const flakes=[],cursorSnow=[];
   function resize(){dpr=Math.min(window.devicePixelRatio||1,1.5);w=window.innerWidth;h=window.innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+"px";canvas.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);}
   window.addEventListener("resize",resize,{passive:true});resize();
   for(let i=0;i<Math.min(115,Math.round(w/7));i++)flakes.push(makeFlake(true));
   function makeFlake(randomY=false){return{x:Math.random()*w,y:randomY?Math.random()*h:-8,r:1+Math.random()*3.2,vy:.45+Math.random()*1.35,vx:(Math.random()-.5)*.45,phase:Math.random()*Math.PI*2,opacity:.35+Math.random()*.55}}
   function addCursorSnow(x,y){
-    // Tiny six-armed snowflakes bloom outward from the pointer like a soft magical trail.
-    for(let i=0;i<3;i++){
-      const a=Math.random()*Math.PI*2,speed=.35+Math.random()*1.15;
-      cursorSnow.push({x:x+(Math.random()-.5)*9,y:y+(Math.random()-.5)*9,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed-.22,life:0,max:850+Math.random()*650,size:2.2+Math.random()*3.2,spin:(Math.random()-.5)*.055,rot:Math.random()*Math.PI});
+    // Small flakes of alternating sizes follow the mouse path, then rotate and fade naturally.
+    const sizes=[1.65,2.35,3.05,2.0];
+    for(let i=0;i<2;i++){
+      const a=Math.random()*Math.PI*2,speed=.22+Math.random()*.78;
+      const size=sizes[cursorFlakeIndex++%sizes.length]+Math.random()*.35;
+      cursorSnow.push({x:x+(Math.random()-.5)*5,y:y+(Math.random()-.5)*5,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed-.12,life:0,max:620+Math.random()*520,size,spin:(Math.random()-.5)*.075,rot:Math.random()*Math.PI});
     }
-    if(cursorSnow.length>180)cursorSnow.splice(0,cursorSnow.length-180);
+    if(cursorSnow.length>145)cursorSnow.splice(0,cursorSnow.length-145);
   }
-  window.addEventListener("pointermove",e=>{if(reduceMotion)return;const now=performance.now();if(now-lastPointer<48)return;lastPointer=now;addCursorSnow(e.clientX,e.clientY);startLoop();},{passive:true});
+  window.addEventListener("pointermove",e=>{
+    if(reduceMotion||!desktopPointer||e.pointerType!=="mouse")return;
+    const now=performance.now();
+    const dx=lastPointerX===null?99:e.clientX-lastPointerX;
+    const dy=lastPointerY===null?99:e.clientY-lastPointerY;
+    if(now-lastPointer<24||Math.hypot(dx,dy)<5)return;
+    lastPointer=now;lastPointerX=e.clientX;lastPointerY=e.clientY;
+    addCursorSnow(e.clientX,e.clientY);startLoop();
+  },{passive:true});
   function drawSnowflake(x,y,size,rotation,alpha){
     // Delicate, translucent flakes: thin strokes, soft glow and no hard outlined badge.
     ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.globalAlpha=alpha*.78;
