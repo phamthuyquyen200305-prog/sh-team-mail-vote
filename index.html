@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#171329">
-<title>MAIL VOTE – SH TEAM 🎃</title>
+<title>MAIL VOTE – SH TEAM ❄️</title>
 <style>
 :root{--bg:#171329;--card:#211b38;--card2:#292142;--purple:#a68aff;--pink:#ffb5d8;--orange:#ff9b51;--text:#fff8ff;--muted:#c0b6d5;--border:#4b3c68;--green:#9ce7bd;--red:#ff9eac}
 *{box-sizing:border-box}
@@ -105,19 +105,95 @@ button:disabled{opacity:.6;cursor:wait}
 @media(max-width:380px){.journey{padding:15px 12px}.journey-title{font-size:11px}.journey-count{font-size:12px}.reward-dialog{padding:25px 16px 18px}}
 @media(prefers-reduced-motion:reduce){.journey-fill,.reward-overlay{transition:none!important}.journey-marker.is-unlocked .journey-pumpkin,.reward-pumpkin,.reward-message,.reward-final-title,.love-cloud span{animation:none!important}}
 
+
+/* WINTER WONDERLAND THEME — visual layer only */
+:root{--bg:#eaf6ff;--card:#ffffff;--card2:#f4faff;--purple:#6b9bc7;--pink:#f3a9bd;--orange:#e9bd65;--text:#29445b;--muted:#6f879b;--border:#c8ddec;--green:#397d68;--red:#b64d67}
+html{background:#eaf6ff}
+body{background:linear-gradient(180deg,#cce8fa 0%,#eaf6ff 48%,#f9fcff 100%);color:var(--text);cursor:default}
+#magicCanvas{z-index:0}
+.brand h1{background:linear-gradient(100deg,#4c83ad,#78aeca,#d78fa8);background-clip:text;-webkit-background-clip:text}
+.decor{filter:drop-shadow(0 3px 5px #7098b855);font-size:30px}
+.card{border:1px solid #c6ddeb;background:rgba(255,255,255,.91);box-shadow:0 16px 45px #7399b52b,0 2px 8px #789db21c;backdrop-filter:blur(10px)}
+input{background:#f5fbff;color:#29445b;border-color:#c8ddec}
+input:focus{border-color:#79aacb;box-shadow:0 0 0 3px #79aacb26}
+.primary{color:#fff;background:linear-gradient(110deg,#75a9ce,#91c5dc 55%,#e5a9bc);box-shadow:0 7px 20px #78a9c533}
+.logout{border-color:#c8ddec;background:#f0f7fc;color:#607d93}
+.copy{border-color:#c5d9e8;background:#edf6fc;color:#527c9a}
+.counter{border-color:#c5dce9;background:linear-gradient(130deg,#e5f4fc,#f9fcff);}
+.counter-label{color:#66869e}.counter-number{color:#548eb5}
+.mail-box,.rules{border:1px solid #d6e5ef;background:#f6fbff;color:#617d92}
+.mail-label{color:#628aa6}.placeholder{color:#9aafbf}
+.notice.success{background:#e6f5ee;color:#397d68}.notice.error{background:#fff0f2;color:#b64d67}.notice.info{background:#eaf4fb;color:#527c9a}
+.journey{border:1px solid #c5dce9;background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(235,247,255,.98));box-shadow:inset 0 1px 0 #fff,0 8px 24px #789db21c}
+.journey-title{color:#5989aa}.journey-caption{color:#7891a4}.journey-count{color:#568caf}
+.journey-track{background:#e2eff7;border-color:#c6dce9}.journey-fill{background:linear-gradient(90deg,#9bc9e2,#c2dfee 55%,#e9b8c8);box-shadow:0 0 12px #9bc9e288}
+.journey-pumpkin{filter:grayscale(.2);opacity:.65}.journey-marker.is-unlocked .journey-pumpkin{filter:drop-shadow(0 0 6px #a6cfe5);opacity:1}.journey-marker.is-unlocked .journey-step{color:#4c83a6}.journey-step{color:#8ba2b3}.journey-status{color:#5d9c83}
+.footer{color:#7994a8}
+.reward-overlay{background:rgba(42,75,99,.55)}
+.reward-dialog{border-color:#c6e0ef;background:radial-gradient(ellipse at 50% 0%,#e5f5ff 0,transparent 58%),linear-gradient(150deg,#fff,#edf7fd 72%);box-shadow:0 0 35px #9dc9e655,0 24px 80px #29445b33}
+.reward-dialog.reward-100{border-color:#c7e3f2;box-shadow:0 0 28px #a9d3e866,0 24px 80px #29445b33}.reward-dialog.reward-500{border-color:#e8c8d4;box-shadow:0 0 38px #e8b9ca88,0 24px 80px #29445b33}.reward-dialog.reward-1000{border-color:#b7d8e9;box-shadow:0 0 55px #a9d4ec99,0 24px 90px #29445b44}
+.reward-close{border-color:#b9d3e4;background:#eaf5fc;color:#42647d}.reward-eyebrow{color:#648da8}.reward-pumpkin{filter:drop-shadow(0 0 14px #9fcce5)}.reward-message{background:linear-gradient(100deg,#568db3,#7bb8d1,#d28da7);background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:none}.reward-sub{color:#69859a}.reward-final-title{background:linear-gradient(100deg,#568db3,#83bfd5 48%,#d28da7);background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 0 25px #a9d4ec66}.love-cloud span{border-color:#c8ddec;background:#f2f9fd;color:#648aa4}.reward-close-cta{background:linear-gradient(110deg,#75a9ce,#91c5dc 55%,#e5a9bc);color:white}
+.snowman{position:fixed;z-index:0;left:max(10px,calc((100vw - 900px)/2));bottom:10px;font-size:clamp(44px,8vw,82px);filter:drop-shadow(0 5px 5px #7197ae44);pointer-events:none;user-select:none;opacity:.9}
+.winter-parade{position:fixed;z-index:2;left:-280px;bottom:16px;display:flex;align-items:flex-end;gap:8px;font-size:clamp(28px,5vw,48px);pointer-events:none;opacity:0;white-space:nowrap}
+.winter-parade.is-running{animation:paradeAcross 15s linear infinite;opacity:1}
+.parade-ducks{font-size:.72em;letter-spacing:-7px;transform:translateY(3px)}
+@keyframes paradeAcross{0%{transform:translateX(0)}100%{transform:translateX(calc(100vw + 560px))}}
+@media(max-width:600px){.snowman{left:5px;bottom:4px;font-size:48px}.winter-parade{bottom:8px}}
+@media(prefers-reduced-motion:reduce){.winter-parade.is-running{animation:none;left:12px;opacity:1}}
+
+/* Soft, storybook winter styling */
+:root{--text:#405d73;--muted:#8299aa;--border:#d7e8f1}
+body{background:radial-gradient(ellipse at 12% 8%,#fff 0,transparent 35%),radial-gradient(ellipse at 88% 72%,#fcecf2 0,transparent 32%),linear-gradient(180deg,#dff1fb 0%,#eff8fd 54%,#fff8fb 100%);font-family:"Nunito", "Trebuchet MS",ui-rounded,system-ui,sans-serif}
+.shell{max-width:480px}
+.brand{margin-bottom:22px}
+.brand h1{font-size:clamp(24px,5vw,30px);letter-spacing:-1px;font-weight:900;background:linear-gradient(100deg,#6b9fc1,#91c5d8 48%,#d99caf);background-clip:text;-webkit-background-clip:text}
+.brand p{color:#829bad}
+.decor{gap:22px;font-size:32px;filter:drop-shadow(0 5px 8px #9fc8dc55)}
+.card{padding:25px;border:1px solid #dcebf3;border-radius:30px;background:rgba(255,255,255,.82);box-shadow:0 18px 55px #8eb5ca25,0 4px 12px #9bbdd01c;backdrop-filter:blur(14px)}
+.card h2{color:#496b83;font-weight:900}
+.subheading{color:#8299aa}
+input{border-radius:17px;background:#f8fcff;border-color:#dceaf2;color:#45657d}
+input:focus{border-color:#a4cde0;box-shadow:0 0 0 4px #b8dceb35}
+.btn{border-radius:18px;min-height:50px}
+.primary{color:#fff;background:linear-gradient(110deg,#91c3df,#a8d5e5 52%,#e9b8c9);box-shadow:0 8px 20px #9bc9dd45}
+.primary:hover{filter:brightness(1.035)!important;box-shadow:0 10px 24px #9bc9dd55}
+.logout{border-radius:14px;background:#f4f9fc;border-color:#dceaf2;color:#708da2}
+.copy{border-radius:14px;background:#f0f8fc;border-color:#d5e8f2;color:#628ba5}
+.counter{border-radius:22px;border-color:#d6e8f1;background:linear-gradient(135deg,#edf8fd,#fff8fb);box-shadow:inset 0 1px #fff,0 8px 20px #9ebfd01c}
+.counter-number{color:#6eabc9;font-size:39px}
+.mail-box,.rules{border-radius:19px;border-color:#deebf2;background:#f8fcfe}
+.mail-label{color:#7298af}
+.journey{border-radius:22px;border-color:#d9e9f1;background:linear-gradient(145deg,#fff,#f0f8fc);box-shadow:0 8px 22px #9ebfd01c}
+.journey-title{color:#6c9db8;letter-spacing:.7px}
+.journey-caption{color:#8ba2b2}
+.journey-track{height:11px;background:#e7f2f8;border-color:#d7e8f1}
+.journey-fill{background:linear-gradient(90deg,#a8d4e7,#c8e6ee 55%,#efc9d6);box-shadow:0 0 13px #a8d4e788}
+.journey-marker .journey-pumpkin{filter:none;opacity:.8}
+.journey-marker.is-unlocked .journey-pumpkin{filter:drop-shadow(0 3px 7px #9fc9dd);}
+.footer{color:#8aa4b5}
+.snowman{filter:drop-shadow(0 7px 8px #82a9bd44);opacity:.78}
+.music-toggle{position:fixed;z-index:8;right:15px;top:14px;border:1px solid #d4e7f1;border-radius:999px;padding:10px 14px;background:#ffffffd9;color:#6489a2;box-shadow:0 5px 18px #7fa9bf30;font-size:12px;backdrop-filter:blur(8px)}
+.music-toggle[aria-pressed="true"]{background:#e9f6fb;color:#4d829e}
+.snow-bloom{position:fixed;z-index:20;pointer-events:none;width:0;height:0}
+.snow-bloom i{position:absolute;left:0;top:0;font-style:normal;font-size:20px;opacity:0;animation:snowBloom 1.15s cubic-bezier(.15,.75,.25,1) forwards;filter:drop-shadow(0 2px 5px #a6d2e4aa)}
+@keyframes snowBloom{0%{transform:translate(0,0) scale(.35) rotate(0);opacity:0}18%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.15) rotate(100deg);opacity:0}}
+@media(max-width:600px){.music-toggle{top:9px;right:9px;padding:8px 11px}}
 </style>
 </head>
 <body>
 <canvas id="magicCanvas" aria-hidden="true"></canvas>
+<div class="snowman" aria-hidden="true">⛄</div>
+<div class="winter-parade" id="winterParade" aria-hidden="true"><span class="parade-fox">🦊</span><span class="parade-ducks">🐥 🐥 🐥 🐥 🐥</span></div>
+<button class="music-toggle" id="musicToggle" type="button" aria-pressed="false" title="Bật/tắt nhạc mùa đông">♫ Nhạc mùa đông: Tắt</button>
 <main class="shell">
   <header class="brand">
-    <div class="decor" aria-hidden="true"><span>🎃</span><span>✨</span><span>🦊</span></div>
+    <div class="decor" aria-hidden="true"><span>🐥</span><span>🦊</span><span>❄️</span></div>
     <h1>MAIL VOTE – SH TEAM</h1>
-    <p>A little Halloween magic for our voting team ✦</p>
+    <p>A little winter wonderland for our voting team ✦</p>
   </header>
 
   <section class="card" id="loginPanel">
-    <h2>🕯️ Đăng nhập</h2>
+    <h2>❄️ Đăng nhập</h2>
     <p class="subheading">Nhập tên, số điện thoại và mật khẩu chung của team để tiếp tục.</p>
     <div class="notice" id="loginNotice" role="status"></div>
     <form id="loginForm">
@@ -129,28 +205,28 @@ button:disabled{opacity:.6;cursor:wait}
   </section>
 
   <section class="card" id="appPanel" hidden>
-    <div class="topbar"><div><h2>🎃 Khu vực bình chọn</h2><div class="user-label">Đang đăng nhập: <strong id="nameDisplay"></strong></div></div><button class="logout" id="logoutBtn" type="button">Đăng xuất</button></div>
+    <div class="topbar"><div><h2>❄️ Khu vực bình chọn</h2><div class="user-label">Đang đăng nhập: <strong id="nameDisplay"></strong></div></div><button class="logout" id="logoutBtn" type="button">Đăng xuất</button></div>
     <div class="notice" id="appNotice" role="status"></div>
     <div class="counter"><div class="counter-label">TOTAL EMAILS RECEIVED</div><div class="counter-number" id="counterDisplay">0</div><div class="counter-note">Số email đã nhận trên trình duyệt này</div></div>
     <section class="journey" aria-label="Little Mystery Journey">
       <div class="journey-head">
-        <div><div class="journey-title">🎃 LITTLE MYSTERY JOURNEY</div><div class="journey-caption">Chạm các cột mốc để mở khóa điều bất ngờ ✨</div></div>
+        <div><div class="journey-title">❄️ LITTLE WINTER JOURNEY</div><div class="journey-caption">Mỗi lượt vote, tuyết lại phủ dày thêm một chút 🐥</div></div>
         <div class="journey-count" id="journeyCount">0 / 1000</div>
       </div>
       <div class="journey-track-wrap">
-        <div class="journey-marker" data-step="100"><span class="journey-pumpkin" aria-hidden="true">🎃</span><span class="journey-step">100</span><span class="journey-status" id="journeyStatus100"></span></div>
-        <div class="journey-marker" data-step="500"><span class="journey-pumpkin" aria-hidden="true">🎃</span><span class="journey-step">500</span><span class="journey-status" id="journeyStatus500"></span></div>
-        <div class="journey-marker" data-step="1000"><span class="journey-pumpkin" aria-hidden="true">🎃</span><span class="journey-step">1000</span><span class="journey-status" id="journeyStatus1000"></span></div>
+        <div class="journey-marker" data-step="100"><span class="journey-pumpkin" aria-hidden="true">❄️</span><span class="journey-step">100</span><span class="journey-status" id="journeyStatus100"></span></div>
+        <div class="journey-marker" data-step="500"><span class="journey-pumpkin" aria-hidden="true">❄️</span><span class="journey-step">500</span><span class="journey-status" id="journeyStatus500"></span></div>
+        <div class="journey-marker" data-step="1000"><span class="journey-pumpkin" aria-hidden="true">❄️</span><span class="journey-step">1000</span><span class="journey-status" id="journeyStatus1000"></span></div>
         <div class="journey-track"><div class="journey-fill" id="journeyFill"></div></div>
       </div>
     </section>
 
     <div class="mail-box"><div class="mail-label">✉ Email</div><div class="mail-value placeholder" id="emailDisplay">Chưa có email. Bấm nút bên dưới để nhận mail.</div><button class="copy" id="copyEmailValueBtn" type="button" hidden>✦ Copy email</button></div>
     <div class="mail-box"><div class="mail-label">🔑 Mật khẩu email</div><div class="mail-value placeholder" id="passwordDisplay">Mật khẩu sẽ hiển thị sau khi nhận email.</div><button class="copy" id="copyPasswordBtn" type="button" disabled>✦ Copy mật khẩu</button></div>
-    <button class="btn primary" id="copyEmailBtn" type="button">🎃 Copy email · Nhận mail mới</button>
+    <button class="btn primary" id="copyEmailBtn" type="button">🐥 Copy email · Nhận mail mới</button>
     <div class="rules"><strong>🌙 Lưu ý</strong><br>• Mail được cấp theo thứ tự trong danh sách.<br>• Mail đã cấp sẽ không được cấp lại.<br>• Đăng xuất không đưa mail đã nhận trở lại kho.<br>• Khi hết mail, hệ thống sẽ dừng cấp mail.</div>
   </section>
-  <footer class="footer">MAIL VOTE – SH TEAM<br>🎃 Trick or vote? 🦊</footer>
+  <footer class="footer">MAIL VOTE – SH TEAM<br>❄️ Let it snow · 🦊 🐥</footer>
 </main>
 
 <div class="reward-overlay" id="rewardOverlay" aria-hidden="true">
@@ -287,6 +363,8 @@ function saveRewardState(){
   try{localStorage.setItem(REWARD_STORAGE_KEY,JSON.stringify(rewardState))}catch(_){}
 }
 function renderRewards(){
+  const parade=$("winterParade");
+  if(parade)parade.classList.toggle("is-running",mailCount>=1000);
   const progress=Math.min(100,Math.max(0,mailCount/1000*100));
   $("journeyCount").textContent=`${mailCount} / 1000`;
   $("journeyFill").style.width=progress+"%";
@@ -453,7 +531,7 @@ function setBusy(value){
   $("loginBtn").classList.toggle("is-loading",value);
   $("copyEmailBtn").classList.toggle("is-loading",value);
   $("loginBtn").textContent=value?"Đang đăng nhập":"Đăng nhập ✨";
-  $("copyEmailBtn").textContent=value?"Đang lấy mail":"🎃 Copy email · Nhận mail mới";
+  $("copyEmailBtn").textContent=value?"Đang lấy mail":"🐥 Copy email · Nhận mail mới";
 }
 function render(){
   const loggedIn=Boolean(token);
@@ -507,6 +585,35 @@ async function copyText(value){
   try{ok=document.execCommand("copy")}finally{el.remove()}
   if(!ok)throw new Error("Trình duyệt không cho phép sao chép tự động. Vui lòng sao chép thủ công nội dung đang hiển thị.");
 }
+// Snowflake bloom when a copy action succeeds.
+function snowflakeBloom(origin){
+  const rect=origin?.getBoundingClientRect?.();
+  const x=rect?rect.left+rect.width/2:window.innerWidth/2;
+  const y=rect?rect.top+rect.height/2:window.innerHeight/2;
+  const wrap=document.createElement("span");wrap.className="snow-bloom";wrap.style.left=x+"px";wrap.style.top=y+"px";
+  const symbols=["❄","✧","❅","✦","❄","❆","✧","❄"];
+  symbols.forEach((symbol,i)=>{const bit=document.createElement("i");bit.textContent=symbol;const angle=(Math.PI*2*i)/symbols.length;const distance=34+Math.random()*28;bit.style.setProperty("--dx",Math.cos(angle)*distance+"px");bit.style.setProperty("--dy",Math.sin(angle)*distance-12+"px");bit.style.animationDelay=(Math.random()*.08)+"s";wrap.appendChild(bit)});
+  document.body.appendChild(wrap);window.setTimeout(()=>wrap.remove(),1400);
+}
+
+// Original, softly synthesized winter lullaby; starts only after the visitor taps the music button.
+(()=>{
+  const button=$("musicToggle");let audio=null,timer=null,step=0,playing=false;
+  const notes=[659.25,783.99,880,783.99,659.25,587.33,523.25,587.33,659.25,783.99,659.25,587.33];
+  function playNote(){if(!audio||!playing)return;const now=audio.currentTime;const freq=notes[step++%notes.length];
+    const osc=audio.createOscillator(),gain=audio.createGain();osc.type="sine";osc.frequency.setValueAtTime(freq,now);
+    gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.035,now+.12);gain.gain.exponentialRampToValueAtTime(.0001,now+1.05);
+    osc.connect(gain);gain.connect(audio.destination);osc.start(now);osc.stop(now+1.08);
+    if(step%4===0){const pad=audio.createOscillator(),pg=audio.createGain();pad.type="sine";pad.frequency.value=freq/2;pg.gain.setValueAtTime(.0001,now);pg.gain.exponentialRampToValueAtTime(.009,now+.25);pg.gain.exponentialRampToValueAtTime(.0001,now+1.7);pad.connect(pg);pg.connect(audio.destination);pad.start(now);pad.stop(now+1.75)}
+  }
+  async function toggle(){
+    if(!playing){const AudioContextClass=window.AudioContext||window.webkitAudioContext;if(!AudioContextClass){button.textContent="♫ Nhạc không hỗ trợ";return}
+      audio=audio||new AudioContextClass();if(audio.state==="suspended")await audio.resume();playing=true;playNote();timer=window.setInterval(playNote,720);button.textContent="♫ Nhạc mùa đông: Bật";button.setAttribute("aria-pressed","true");
+    }else{playing=false;window.clearInterval(timer);timer=null;if(audio&&audio.state==="running")await audio.suspend();button.textContent="♫ Nhạc mùa đông: Tắt";button.setAttribute("aria-pressed","false")}
+  }
+  button.addEventListener("click",()=>toggle().catch(()=>{button.textContent="♫ Không phát được nhạc"}));
+})();
+
 function clearSession(){
   token="";personName="";phoneNumber="";currentMail=null;
   localStorage.removeItem(STORAGE.token);
@@ -549,6 +656,7 @@ $("copyEmailBtn").addEventListener("click",async()=>{
     launchFireworks();
     try{
       await copyText(currentMail.email);
+      snowflakeBloom($("copyEmailBtn"));
       showNotice("appNotice","Đã nhận mail mới và copy email. Mật khẩu đã được cập nhật theo mail này.","success");
     }catch(_){
       showNotice("appNotice","Email đã được cấp và hiển thị. Trình duyệt chưa thể sao chép tự động; bạn có thể sao chép email đang hiển thị.","info");
@@ -563,12 +671,12 @@ $("copyEmailBtn").addEventListener("click",async()=>{
 
 $("copyEmailValueBtn").addEventListener("click",async()=>{
   if(!currentMail?.email){showNotice("appNotice","Chưa có email để copy.","error");return}
-  try{await copyText(currentMail.email);showNotice("appNotice","Đã copy email đang hiển thị.","success")}
+  try{await copyText(currentMail.email);snowflakeBloom($("copyEmailValueBtn"));showNotice("appNotice","Đã copy email đang hiển thị.","success")}
   catch(error){showNotice("appNotice",error.message,"error")}
 });
 $("copyPasswordBtn").addEventListener("click",async()=>{
   if(!currentMail||!currentMail.password){showNotice("appNotice","Chưa có mật khẩu để copy.","error");return}
-  try{await copyText(currentMail.password);showNotice("appNotice","Đã copy mật khẩu!","success")}
+  try{await copyText(currentMail.password);snowflakeBloom($("copyPasswordBtn"));showNotice("appNotice","Đã copy mật khẩu!","success")}
   catch(error){showNotice("appNotice",error.message,"error")}
 });
 $("logoutBtn").addEventListener("click",async()=>{
@@ -588,94 +696,31 @@ document.addEventListener("visibilitychange", () => {
 render();
 if(token&&rewardState.pending.length)window.setTimeout(processRewardQueue,250);
 
-/* Lightweight Halloween magic: canvas is behind the card, so it never covers mail text/buttons. */
+/* Winter canvas: falling snow, vote-based snowdrift and fox pawprints that fade after 10 seconds. */
 (() => {
   const canvas=$("magicCanvas"),ctx=canvas.getContext("2d",{alpha:true});
   const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let w=0,h=0,dpr=1,raf=0,lastFrame=0;
-  const stars=[],particles=[];
-  const colors=["#ffb5d8","#c6b2ff","#ffc17b","#fff2b0","#9ce7bd"];
-  function resize(){
-    dpr=Math.min(window.devicePixelRatio||1,1.5);
-    w=window.innerWidth;h=window.innerHeight;
-    canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
-    canvas.style.width=w+"px";canvas.style.height=h+"px";
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-  }
+  let w=0,h=0,dpr=1,raf=0,lastFrame=0,lastPointer=0,lastPaw=null;
+  const flakes=[],pawprints=[];
+  function resize(){dpr=Math.min(window.devicePixelRatio||1,1.5);w=window.innerWidth;h=window.innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+"px";canvas.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);}
   window.addEventListener("resize",resize,{passive:true});resize();
-
-  function addStar(x,y){
-    if(reduceMotion)return;
-    stars.push({x,y,vx:(Math.random()-.5)*.8,vy:-Math.random()*1.1-.2,life:1,size:Math.random()*2.2+1,color:colors[(Math.random()*colors.length)|0]});
-    if(stars.length>65)stars.splice(0,stars.length-65);
-    startLoop();
-  }
-  let lastPointer=0;
-  window.addEventListener("pointermove",e=>{
-    const now=performance.now();
-    if(now-lastPointer<35)return;
-    lastPointer=now;addStar(e.clientX,e.clientY);
-  },{passive:true});
-
-  function burst(x,y,kind){
-    if(reduceMotion)return;
-    const count=kind==="fox"?34:kind==="pumpkin"?30:38;
-    for(let i=0;i<count;i++){
-      const a=Math.PI*2*i/count+(Math.random()-.5)*.12;
-      const speed=1.1+Math.random()*2.2;
-      particles.push({x,y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,life:1,decay:.012+Math.random()*.012,size:1.4+Math.random()*2,color:colors[(Math.random()*colors.length)|0],kind:"dot"});
-    }
-    // Small themed silhouettes float around the outer background, behind the content card.
-    particles.push({x,y,vx:(Math.random()-.5)*.7,vy:-.9,life:1,decay:.009,size:kind==="fox"?22:23,kind:"emoji",emoji:kind==="fox"?"🦊":"🎃"});
-    startLoop();
-  }
-  function launchFireworks(){
-    if(reduceMotion)return;
-    const shell=document.querySelector(".shell").getBoundingClientRect();
-    const edgePoints=[
-      {x:Math.max(25,shell.left*.45),y:Math.max(65,shell.top+shell.height*.25)},
-      {x:Math.min(w-25,shell.right+(w-shell.right)*.48),y:Math.max(75,shell.top+shell.height*.4)},
-      {x:Math.max(30,shell.left*.55),y:Math.min(h-35,shell.bottom+(h-shell.bottom)*.38)},
-      {x:Math.min(w-30,shell.right+(w-shell.right)*.45),y:Math.min(h-35,shell.bottom+(h-shell.bottom)*.35)}
-    ].filter(p=>p.x<shell.left-3||p.x>shell.right+3||p.y<shell.top-3||p.y>shell.bottom+3);
-    if(!edgePoints.length)return;
-    const p=edgePoints[(Math.random()*edgePoints.length)|0];
-    burst(p.x,p.y,Math.random()>.5?"fox":"pumpkin");
-    if(w>600){
-      setTimeout(()=>burst(Math.random()>.5?Math.max(25,shell.left*.5):Math.min(w-25,shell.right+(w-shell.right)*.5),Math.random()>.5?Math.max(60,shell.top):Math.min(h-30,shell.bottom+35),Math.random()>.5?"fox":"pumpkin"),100);
-    }
-  }
+  for(let i=0;i<Math.min(115,Math.round(w/7));i++)flakes.push(makeFlake(true));
+  function makeFlake(randomY=false){return{x:Math.random()*w,y:randomY?Math.random()*h:-8,r:1+Math.random()*3.2,vy:.45+Math.random()*1.35,vx:(Math.random()-.5)*.45,phase:Math.random()*Math.PI*2,opacity:.35+Math.random()*.55}}
+  function addPaw(x,y){pawprints.push({x,y,at:performance.now(),angle:Math.random()*.35-.175});if(pawprints.length>90)pawprints.shift();}
+  window.addEventListener("pointermove",e=>{if(reduceMotion)return;const now=performance.now();if(now-lastPointer<85)return;lastPointer=now;if(!lastPaw||Math.hypot(e.clientX-lastPaw.x,e.clientY-lastPaw.y)>24){addPaw(e.clientX,e.clientY);lastPaw={x:e.clientX,y:e.clientY};}startLoop();},{passive:true});
   function startLoop(){if(!raf)raf=requestAnimationFrame(draw)}
-  function draw(now){
-    raf=0;
-    if(now-lastFrame<24){raf=requestAnimationFrame(draw);return}
-    lastFrame=now;ctx.clearRect(0,0,w,h);
-    for(let i=stars.length-1;i>=0;i--){
-      const p=stars[i];p.x+=p.vx;p.y+=p.vy;p.life-=.035;
-      if(p.life<=0){stars.splice(i,1);continue}
-      ctx.globalAlpha=p.life;ctx.fillStyle=p.color;
-      ctx.beginPath();
-      for(let k=0;k<8;k++){
-        const a=k*Math.PI/4, r=k%2===0?p.size:p.size*.35;
-        const xx=p.x+Math.cos(a)*r,yy=p.y+Math.sin(a)*r;
-        if(k===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);
-      }
-      ctx.closePath();ctx.fill();
-    }
-    for(let i=particles.length-1;i>=0;i--){
-      const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=p.kind==="dot"?.025:0;p.vx*=.99;p.life-=p.decay;
-      if(p.life<=0){particles.splice(i,1);continue}
-      ctx.globalAlpha=Math.min(1,p.life);
-      if(p.kind==="emoji"){
-        ctx.font=`${p.size}px system-ui, sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(p.emoji,p.x,p.y);
-      }else{
-        ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*p.life,0,Math.PI*2);ctx.fill();
-      }
-    }
+  function draw(now){raf=0;if(now-lastFrame<28){raf=requestAnimationFrame(draw);return}lastFrame=now;ctx.clearRect(0,0,w,h);
+    if(!reduceMotion){while(flakes.length<Math.min(115,Math.round(w/7)))flakes.push(makeFlake());}
+    for(const f of flakes){f.y+=f.vy;f.x+=f.vx+Math.sin(now/1300+f.phase)*.22;if(f.y>h+8){f.y=-8;f.x=Math.random()*w}if(f.x<-8)f.x=w+8;if(f.x>w+8)f.x=-8;ctx.globalAlpha=f.opacity;ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);ctx.fill();}
+    // Snow builds up gradually as this device's vote counter approaches 1,000.
+    const progress=Math.max(0,Math.min(1,(Number(mailCount)||0)/1000));const depth=10+progress*Math.min(105,h*.19);const base=h-depth;
+    ctx.globalAlpha=1;ctx.fillStyle="#fff";ctx.beginPath();ctx.moveTo(0,h);ctx.lineTo(0,base+8);for(let x=0;x<=w+20;x+=20)ctx.lineTo(x,base+Math.sin(x*.012+now*.00018)*5+Math.sin(x*.027)*2);ctx.lineTo(w,h);ctx.closePath();ctx.fill();
+    // Paws are visible for ten seconds, then melt away.
+    for(let i=pawprints.length-1;i>=0;i--){const p=pawprints[i],age=now-p.at;if(age>10000){pawprints.splice(i,1);continue}ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.globalAlpha=(1-age/10000)*.72;ctx.fillStyle="#8eb6cf";ctx.beginPath();ctx.ellipse(0,3,3.5,4.3,0,0,Math.PI*2);ctx.fill();for(const [dx,dy] of [[-4,-4],[0,-6],[4,-4]]){ctx.beginPath();ctx.arc(dx,dy,1.65,0,Math.PI*2);ctx.fill()}ctx.restore();}
     ctx.globalAlpha=1;
-    if(stars.length||particles.length)raf=requestAnimationFrame(draw);
+    if(!reduceMotion||pawprints.length)raf=requestAnimationFrame(draw);
   }
-  window.launchFireworks=launchFireworks;
+  startLoop();
 })();
 </script>
 </body>
