@@ -537,6 +537,75 @@ input, button, textarea, select { font: inherit; }
 .leaderboard-loading{opacity:.72}
 @media(max-width:380px){.leaderboard{padding:14px}.leaderboard-row{gap:7px;padding:8px}}
 
+
+/* MOBILE MUSIC COMPATIBILITY — visible, touchable YouTube player on iOS and Android */
+.music-toggle{
+  position:fixed!important;
+  z-index:10001!important;
+  top:10px!important;
+  right:10px!important;
+  max-width:calc(100vw - 20px);
+  touch-action:manipulation;
+}
+.youtube-music-panel{
+  display:block!important;
+  position:fixed!important;
+  z-index:10000!important;
+  top:62px!important;
+  right:10px!important;
+  left:auto!important;
+  bottom:auto!important;
+  width:min(260px,calc(100vw - 20px))!important;
+  height:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:10px!important;
+  margin:0!important;
+  border:1px solid #dcebf3!important;
+  border-radius:16px!important;
+  background:rgba(255,255,255,.98)!important;
+  box-shadow:0 12px 35px #789fb544!important;
+  opacity:1!important;
+  visibility:visible!important;
+  overflow:visible!important;
+  pointer-events:auto!important;
+}
+.youtube-music-panel[hidden]{display:none!important}
+.youtube-music-panel .youtube-music-head{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  padding:1px 3px 8px!important;
+}
+.youtube-music-panel p{display:block!important}
+#youtubePlayerMount{
+  position:static!important;
+  display:block!important;
+  width:100%!important;
+  height:200px!important;
+  min-width:0!important;
+  min-height:200px!important;
+  overflow:hidden!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+#youtubePlayerMount iframe{
+  display:block!important;
+  width:100%!important;
+  min-width:200px!important;
+  max-width:100%!important;
+  height:200px!important;
+  min-height:200px!important;
+  border:0!important;
+  border-radius:12px!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+@media(max-width:600px){
+  .music-toggle{top:8px!important;right:8px!important;padding:8px 11px!important}
+  .youtube-music-panel{top:56px!important;right:8px!important;width:min(260px,calc(100vw - 16px))!important}
+}
+
 </style>
 </head>
 <body>
@@ -1176,23 +1245,46 @@ function startMilestoneRain(){
   milestoneRainFrame=requestAnimationFrame(frame);
 }
 
-// Official YouTube embed: the visitor starts/stops the requested song with the music button.
+// YouTube music: start only after a direct user tap (iOS Safari + Android Chrome).
 (()=>{
-  const button=$("musicToggle"),panel=$("youtubeMusicPanel"),mount=$("youtubePlayerMount"),close=$("closeYoutubeMusic");
-  const videoId="IPsgmEcTBco";let playing=false;
-  function stop(){mount.innerHTML="";panel.hidden=false;playing=false;button.textContent="♫ Phát nhạc mùa đông";button.setAttribute("aria-pressed","false");}
+  const button=$("musicToggle");
+  const panel=$("youtubeMusicPanel");
+  const mount=$("youtubePlayerMount");
+  const close=$("closeYoutubeMusic");
+  const videoId="IPsgmEcTBco";
+  let playing=false;
+
+  function stop(){
+    mount.replaceChildren();
+    panel.hidden=true;
+    playing=false;
+    button.textContent="♫ Nhạc mùa đông: Tắt";
+    button.setAttribute("aria-pressed","false");
+  }
+
   function start(){
-    mount.innerHTML="";
+    if(playing)return;
+    mount.replaceChildren();
+
     const frame=document.createElement("iframe");
     frame.title="Winter music from YouTube";
+    frame.width="240";
+    frame.height="200";
     frame.allow="autoplay; encrypted-media; picture-in-picture; web-share";
     frame.referrerPolicy="strict-origin-when-cross-origin";
-    frame.src=`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1`;
     frame.allowFullscreen=true;
-    mount.appendChild(frame);panel.hidden=false;playing=true;
-    button.textContent="♫ Đang phát nhạc";button.setAttribute("aria-pressed","true");
+    frame.setAttribute("loading","eager");
+    frame.src=`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&playsinline=1&controls=1&rel=0`;
+    mount.appendChild(frame);
+
+    // Reveal a real, tappable YouTube player. Tiny/off-screen embeds are unreliable on mobile.
+    panel.hidden=false;
+    playing=true;
+    button.textContent="♫ Đang phát nhạc";
+    button.setAttribute("aria-pressed","true");
   }
-  button.addEventListener("click",()=>{if(playing)stop();else start();});
+
+  button.addEventListener("click",()=>playing?stop():start());
   close.addEventListener("click",stop);
 })();
 
