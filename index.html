@@ -183,6 +183,14 @@ input:focus{border-color:#a4cde0;box-shadow:0 0 0 4px #b8dceb35}
 .snow-bloom i{position:absolute;left:0;top:0;font-style:normal;font-size:20px;opacity:0;animation:snowBloom 1.15s cubic-bezier(.15,.75,.25,1) forwards;filter:drop-shadow(0 2px 5px #a6d2e4aa)}
 @keyframes snowBloom{0%{transform:translate(0,0) scale(.35) rotate(0);opacity:0}18%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.15) rotate(100deg);opacity:0}}
 @media(max-width:600px){.music-toggle{top:9px;right:9px;padding:8px 11px}}
+.youtube-music-panel{position:fixed;z-index:30;top:62px;right:14px;width:260px;padding:10px;border:1px solid #dcebf3;border-radius:18px;background:rgba(255,255,255,.96);box-shadow:0 12px 35px #789fb533;backdrop-filter:blur(16px);color:#6d8da2}
+.youtube-music-panel[hidden]{display:none}
+.youtube-music-head{display:flex;align-items:center;justify-content:space-between;padding:1px 3px 8px;font-size:12px;letter-spacing:.3px}
+.youtube-music-head button{border:0;background:#edf7fb;color:#7899ad;border-radius:50%;width:24px;height:24px;font-size:18px;line-height:1;cursor:pointer}
+#youtubePlayerMount iframe{display:block;width:240px;height:200px;border:0;border-radius:12px;background:#edf7fb}
+.youtube-music-panel p{font-size:10px;text-align:center;color:#9ab0be;margin:7px 0 1px}
+@media(max-width:420px){.youtube-music-panel{right:9px;top:55px;width:250px}#youtubePlayerMount iframe{width:230px;height:200px}}
+
 
 
 /* POLISHED WINTER EDITION — layout and visual refinement only */
@@ -282,13 +290,54 @@ input, button, textarea, select { font: inherit; }
 @keyframes loveRise{0%{opacity:0;transform:translate(-50%,12px) scale(.72) rotate(var(--tilt))}14%{opacity:1}72%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--drift)), -95px) scale(1.08) rotate(var(--tilt))}}
 @media(prefers-reduced-motion:reduce){.copy-firework i,.copy-love{animation-duration:.01ms!important}}
 
+
+/* SOFT COPY MOMENT + 20-SECOND MILESTONE CONFETTI */
+#milestoneRainCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:25;pointer-events:none}
+.copy-love{position:fixed;z-index:89;pointer-events:none;left:var(--x);top:var(--y);max-width:84vw;white-space:nowrap;
+  font-family:Georgia,"Segoe UI",serif!important;font-size:clamp(12px,1.8vw,17px);font-weight:600;letter-spacing:.35px;
+  color:#b77f9e;text-shadow:0 1px 0 #fff,0 0 8px #fff,0 0 16px #f6dce9;
+  animation:softVoteRise 3.4s cubic-bezier(.18,.72,.24,1) forwards}
+@keyframes softVoteRise{0%{opacity:0;transform:translate(-50%,12px) scale(.92) rotate(var(--tilt))}16%{opacity:.96}70%{opacity:.9}100%{opacity:0;transform:translate(calc(-50% + var(--drift)),-105px) scale(1.04) rotate(var(--tilt))}}
+.copy-snow-bloom{position:fixed;z-index:91;left:0;top:0;width:0;height:0;pointer-events:none}
+.copy-snow-bloom i{position:absolute;left:0;top:0;font-style:normal;font-size:clamp(15px,2vw,23px);color:#fff;
+  text-shadow:0 0 5px #fff,0 0 12px #b9e8fa,0 0 20px #d9f5ff;
+  animation:copySnowBloom 1.7s cubic-bezier(.12,.72,.2,1) forwards}
+@keyframes copySnowBloom{0%{opacity:0;transform:translate(0,0) scale(.2) rotate(0)}15%{opacity:1}72%{opacity:.95}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.15) rotate(var(--rot))}}
+@media(prefers-reduced-motion:reduce){.copy-love,.copy-snow-bloom i{animation-duration:.01ms!important}}
+
+
+
+/* WINTER JOURNEY — tidy milestone cards and airy floating snow */
+.journey{padding:19px 18px 17px;border-radius:24px}
+.journey-head{display:flex;align-items:center;gap:12px;margin-bottom:17px}
+.journey-title{font-size:11px;letter-spacing:1.1px;line-height:1.45}
+.journey-caption{max-width:235px;font-size:11px;line-height:1.55}
+.journey-count{padding:7px 11px;font-size:11px;letter-spacing:.15px}
+.journey-track-wrap{padding:0;margin:0 2px 17px}
+.journey-track{height:8px;border:0;background:linear-gradient(90deg,#eaf3f8,#f5edf3);box-shadow:inset 0 1px 3px #a9c8d522}
+.journey-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#a9d6e9 0%,#c9e8ed 54%,#edc6d8 100%);box-shadow:0 0 12px #acd8e866}
+.journey-milestones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;align-items:stretch}
+.journey-marker{position:relative;top:auto;left:auto!important;transform:none;min-width:0;min-height:77px;padding:10px 5px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;border:1px solid #e3eef4;border-radius:16px;background:linear-gradient(155deg,#fff,#f6fbfe);box-shadow:0 4px 12px #a9c6d315;transition:background .35s,border-color .35s,box-shadow .35s,transform .35s}
+.journey-pumpkin,.journey-marker .journey-pumpkin{display:grid;place-items:center;width:auto;height:19px;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;color:#9fc7dc;font-family:Georgia,serif;font-size:19px;line-height:1;opacity:.78;filter:none}
+.journey-step{display:flex;align-items:baseline;gap:4px;color:#6f91a7;font-size:13px;line-height:1.15;font-weight:800;letter-spacing:.1px}
+.journey-step small{font-size:7px;letter-spacing:.8px;font-weight:750;color:#9ab0bd}
+.journey-status{min-height:9px;font-size:7px;line-height:1.2;letter-spacing:.65px;color:#77a994}
+.journey-marker.is-unlocked{transform:translateY(-2px);border-color:#c8e3ed;background:linear-gradient(155deg,#fff,#edf8fc);box-shadow:0 7px 17px #9fc9dc30}
+.journey-marker.is-unlocked .journey-pumpkin{color:#8dbbd3;opacity:1;animation:milestoneFloat 2.7s ease-in-out infinite;filter:drop-shadow(0 3px 7px #b8ddec88)}
+.journey-marker.is-unlocked .journey-step{color:#5689a8}
+.journey-marker.is-unlocked .journey-step small{color:#83a7ba}
+@keyframes milestoneFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-3px) rotate(5deg)}}
+@media(max-width:380px){.journey{padding:16px 12px}.journey-milestones{gap:6px}.journey-marker{min-height:72px;padding:8px 3px}.journey-step{font-size:12px}.journey-step small{font-size:6px}}
+
 </style>
 </head>
 <body>
 <canvas id="magicCanvas" aria-hidden="true"></canvas>
+<canvas id="milestoneRainCanvas" aria-hidden="true"></canvas>
 <div class="snowman" aria-hidden="true">⛄</div>
 <div class="winter-parade" id="winterParade" aria-hidden="true"><span class="parade-ducks"><span>🐥</span><span>🐥</span><span>🐥</span><span>🐥</span><span>🐥</span><span>🐥</span></span><span class="parade-fox">🦊</span></div>
 <button class="music-toggle" id="musicToggle" type="button" aria-pressed="false" title="Bật/tắt nhạc mùa đông">♫ Nhạc mùa đông: Tắt</button>
+<div class="youtube-music-panel" id="youtubeMusicPanel" hidden><div class="youtube-music-head"><span>♪ Winter playlist</span><button type="button" id="closeYoutubeMusic" aria-label="Đóng trình phát">×</button></div><div id="youtubePlayerMount"></div><p>Nhạc được phát từ YouTube</p></div>
 <main class="shell">
   <header class="brand">
     <h1>MAIL VOTE – SH TEAM</h1>
@@ -317,10 +366,24 @@ input, button, textarea, select { font: inherit; }
         <div class="journey-count" id="journeyCount">0 / 1000</div>
       </div>
       <div class="journey-track-wrap">
-        <div class="journey-marker" data-step="100"><span class="journey-pumpkin" aria-hidden="true">❄️</span><span class="journey-step">100</span><span class="journey-status" id="journeyStatus100"></span></div>
-        <div class="journey-marker" data-step="500"><span class="journey-pumpkin" aria-hidden="true">❄️</span><span class="journey-step">500</span><span class="journey-status" id="journeyStatus500"></span></div>
-        <div class="journey-marker" data-step="1000"><span class="journey-pumpkin" aria-hidden="true">❄️</span><span class="journey-step">1000</span><span class="journey-status" id="journeyStatus1000"></span></div>
         <div class="journey-track"><div class="journey-fill" id="journeyFill"></div></div>
+      </div>
+      <div class="journey-milestones" aria-label="Các mốc phần thưởng">
+        <div class="journey-marker" data-step="100">
+          <span class="journey-pumpkin" aria-hidden="true">✧</span>
+          <span class="journey-step">100 <small>VOTES</small></span>
+          <span class="journey-status" id="journeyStatus100"></span>
+        </div>
+        <div class="journey-marker" data-step="500">
+          <span class="journey-pumpkin" aria-hidden="true">❄</span>
+          <span class="journey-step">500 <small>VOTES</small></span>
+          <span class="journey-status" id="journeyStatus500"></span>
+        </div>
+        <div class="journey-marker" data-step="1000">
+          <span class="journey-pumpkin" aria-hidden="true">✧</span>
+          <span class="journey-step">1,000 <small>VOTES</small></span>
+          <span class="journey-status" id="journeyStatus1000"></span>
+        </div>
       </div>
     </section>
 
@@ -525,6 +588,7 @@ function launchWinterParade(step){
 function showReward(step){
   rewardActive=true;
   launchWinterParade(step);
+  startMilestoneRain();
   const overlay=$("rewardOverlay"),dialog=$("rewardDialog");
   dialog.className="reward-dialog reward-"+step;
   $("rewardEyebrow").textContent=step===1000?"THE FINAL MILESTONE":"MILESTONE "+step+" UNLOCKED";
@@ -699,59 +763,103 @@ async function copyText(value){
   try{ok=document.execCommand("copy")}finally{el.remove()}
   if(!ok)throw new Error("Trình duyệt không cho phép sao chép tự động. Vui lòng sao chép thủ công nội dung đang hiển thị.");
 }
-// Golden fireworks bloom from the clicked copy button; fan messages float across the page.
+// A soft snowflake bloom at the clicked button, followed by gentle vote messages.
 function copyCelebration(origin){
   const rect=origin?.getBoundingClientRect?.();
   const x=rect?rect.left+rect.width/2:window.innerWidth/2;
   const y=rect?rect.top+rect.height/2:window.innerHeight/2;
-  const golds=["✦","✧","✺","✹","✴","★","✦","❋"];
-  function burst(cx,cy,count=30,spread=105){
-    const wrap=document.createElement("span");wrap.className="copy-firework";wrap.style.left=cx+"px";wrap.style.top=cy+"px";
-    for(let i=0;i<count;i++){
-      const bit=document.createElement("i");bit.textContent=golds[Math.floor(Math.random()*golds.length)];
-      const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.22;
-      const distance=spread*(.48+Math.random()*.72);
-      bit.style.setProperty("--dx",Math.cos(angle)*distance+"px");
-      bit.style.setProperty("--dy",Math.sin(angle)*distance-20+"px");
-      bit.style.setProperty("--rot",(Math.random()*360-180)+"deg");
-      bit.style.setProperty("--fs",(13+Math.random()*17)+"px");
-      bit.style.setProperty("--delay",(Math.random()*.16)+"s");wrap.appendChild(bit);
-    }
-    document.body.appendChild(wrap);window.setTimeout(()=>wrap.remove(),1650);
-  }
-  // A dense burst directly from the button, followed by two softer background bursts.
-  burst(x,y,38,112);
-  window.setTimeout(()=>burst(Math.max(45,Math.min(innerWidth-45,x+(Math.random()-.5)*innerWidth*.42)),Math.max(75,Math.min(innerHeight-70,y-65)),24,78),110);
-  window.setTimeout(()=>burst(Math.max(45,Math.min(innerWidth-45,x+(Math.random()-.5)*innerWidth*.5)),Math.max(75,Math.min(innerHeight-70,y+45)),20,70),230);
-  const messages=["i love you","Nonna saranghae","Xị ơi cố lên","Seonghyeon boom","Seonghyeon on top 1","ACE EOM","Em Lúm yêu xị"];
+  // Restore the snowflake blossom that accompanies every successful copy.
+  const snow=document.createElement("span");snow.className="copy-snow-bloom";snow.style.left=x+"px";snow.style.top=y+"px";
+  const flakes=["❄","✧","❅","✦","❄","✧","❆","❅","❄","✧","❅","✦","❄","❆"];
+  flakes.forEach((symbol,i)=>{
+    const bit=document.createElement("i");bit.textContent=symbol;
+    const angle=(Math.PI*2*i/flakes.length)+(Math.random()-.5)*.24;
+    const distance=48+Math.random()*72;
+    bit.style.setProperty("--dx",Math.cos(angle)*distance+"px");
+    bit.style.setProperty("--dy",Math.sin(angle)*distance-12+"px");
+    bit.style.setProperty("--rot",(Math.random()*240-120)+"deg");
+    bit.style.animationDelay=(Math.random()*.12)+"s";
+    snow.appendChild(bit);
+  });
+  document.body.appendChild(snow);window.setTimeout(()=>snow.remove(),1950);
+
+  // Soft pastel vote encouragement, not hard metallic/gold lettering.
+  const messages=[
+    "Mỗi lượt vote đều quý giá ✨",
+    "Cùng đưa Seonghyeon lên top nhé",
+    "Keep voting for Seonghyeon ♡",
+    "One more vote for Eom!",
+    "EOM TEAM, cố lên nhé!",
+    "Our votes, his shining moment",
+    "Đừng bỏ cuộc, chúng ta cùng cố gắng!"
+  ];
   messages.forEach((message,index)=>{
     window.setTimeout(()=>{
       const el=document.createElement("span");el.className="copy-love";el.textContent=message;
-      el.style.setProperty("--x",(8+Math.random()*84)+"vw");
-      el.style.setProperty("--y",(20+Math.random()*62)+"vh");
-      el.style.setProperty("--drift",(Math.random()*100-50)+"px");
-      el.style.setProperty("--tilt",(Math.random()*12-6)+"deg");
-      document.body.appendChild(el);window.setTimeout(()=>el.remove(),3000);
-    },index*105);
+      el.style.setProperty("--x",(12+Math.random()*76)+"vw");
+      el.style.setProperty("--y",(24+Math.random()*55)+"vh");
+      el.style.setProperty("--drift",(Math.random()*70-35)+"px");
+      el.style.setProperty("--tilt",(Math.random()*7-3.5)+"deg");
+      document.body.appendChild(el);window.setTimeout(()=>el.remove(),3600);
+    },index*150);
   });
 }
 
-// Original, softly synthesized winter lullaby; starts only after the visitor taps the music button.
+// Every unlocked milestone releases a gentle 20-second shower of paper confetti and golden hearts.
+let milestoneRainFrame=0, milestoneRainUntil=0, milestoneRainResize=null;
+function startMilestoneRain(){
+  const canvas=$("milestoneRainCanvas");if(!canvas)return;
+  const ctx=canvas.getContext("2d");
+  const dpr=Math.min(window.devicePixelRatio||1,1.5);
+  let w=0,h=0,last=0;
+  const particles=[];
+  const palette=["#f6c96d","#f4a9c7","#d8c5f4","#b9e1ef","#fff0c7","#ffffff"];
+  function resize(){w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+"px";canvas.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0)}
+  if(milestoneRainFrame)cancelAnimationFrame(milestoneRainFrame);
+  if(milestoneRainResize)removeEventListener("resize",milestoneRainResize);
+  resize();milestoneRainResize=resize;addEventListener("resize",resize,{passive:true});
+  milestoneRainUntil=performance.now()+20000;
+  function addBatch(){
+    for(let i=0;i<16;i++)particles.push({x:Math.random()*w,y:-12-Math.random()*h*.25,vx:(Math.random()-.5)*.65,vy:.65+Math.random()*1.25,
+      sway:Math.random()*Math.PI*2,swaySpeed:.012+Math.random()*.018,life:1,size:4+Math.random()*6,
+      rot:Math.random()*6,spin:(Math.random()-.5)*.055,color:palette[(Math.random()*palette.length)|0],heart:Math.random()<.34,kind:Math.random()<.55?"confetti":"ribbon"});
+  }
+  function frame(now){
+    const dt=Math.min(34,last?now-last:16);last=now;ctx.clearRect(0,0,w,h);
+    if(now<milestoneRainUntil&&Math.random()<.9)addBatch();
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i];p.sway+=p.swaySpeed*dt;p.x+=p.vx+Math.sin(p.sway)*.55;p.y+=p.vy*dt/16;p.rot+=p.spin*dt;
+      if(p.y>h+25){particles.splice(i,1);continue}
+      ctx.save();ctx.globalAlpha=Math.min(1,Math.max(0,(h+20-p.y)/55));ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.heart?"#e9b94f":p.color;
+      if(p.heart){ctx.font=`${p.size*2.5}px Georgia,serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("♥",0,0)}
+      else if(p.kind==="confetti"){ctx.fillRect(-p.size*.45,-p.size*.28,p.size*.9,p.size*.56)}
+      else{ctx.beginPath();ctx.ellipse(0,0,p.size*.22,p.size,0,0,Math.PI*2);ctx.fill()}
+      ctx.restore();
+    }
+    if(now<milestoneRainUntil||particles.length){milestoneRainFrame=requestAnimationFrame(frame)}
+    else{milestoneRainFrame=0;ctx.clearRect(0,0,w,h);if(milestoneRainResize)removeEventListener("resize",milestoneRainResize);milestoneRainResize=null}
+  }
+  milestoneRainFrame=requestAnimationFrame(frame);
+}
+
+// Official YouTube embed: the visitor starts/stops the requested song with the music button.
 (()=>{
-  const button=$("musicToggle");let audio=null,timer=null,step=0,playing=false;
-  const notes=[659.25,783.99,880,783.99,659.25,587.33,523.25,587.33,659.25,783.99,659.25,587.33];
-  function playNote(){if(!audio||!playing)return;const now=audio.currentTime;const freq=notes[step++%notes.length];
-    const osc=audio.createOscillator(),gain=audio.createGain();osc.type="sine";osc.frequency.setValueAtTime(freq,now);
-    gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.035,now+.12);gain.gain.exponentialRampToValueAtTime(.0001,now+1.05);
-    osc.connect(gain);gain.connect(audio.destination);osc.start(now);osc.stop(now+1.08);
-    if(step%4===0){const pad=audio.createOscillator(),pg=audio.createGain();pad.type="sine";pad.frequency.value=freq/2;pg.gain.setValueAtTime(.0001,now);pg.gain.exponentialRampToValueAtTime(.009,now+.25);pg.gain.exponentialRampToValueAtTime(.0001,now+1.7);pad.connect(pg);pg.connect(audio.destination);pad.start(now);pad.stop(now+1.75)}
+  const button=$("musicToggle"),panel=$("youtubeMusicPanel"),mount=$("youtubePlayerMount"),close=$("closeYoutubeMusic");
+  const videoId="IPsgmEcTBco";let playing=false;
+  function stop(){mount.innerHTML="";panel.hidden=true;playing=false;button.textContent="♫ Phát nhạc mùa đông";button.setAttribute("aria-pressed","false");}
+  function start(){
+    mount.innerHTML="";
+    const frame=document.createElement("iframe");
+    frame.title="Winter music from YouTube";
+    frame.allow="autoplay; encrypted-media; picture-in-picture; web-share";
+    frame.referrerPolicy="strict-origin-when-cross-origin";
+    frame.src=`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1`;
+    frame.allowFullscreen=true;
+    mount.appendChild(frame);panel.hidden=false;playing=true;
+    button.textContent="♫ Đang phát nhạc";button.setAttribute("aria-pressed","true");
   }
-  async function toggle(){
-    if(!playing){const AudioContextClass=window.AudioContext||window.webkitAudioContext;if(!AudioContextClass){button.textContent="♫ Nhạc không hỗ trợ";return}
-      audio=audio||new AudioContextClass();if(audio.state==="suspended")await audio.resume();playing=true;playNote();timer=window.setInterval(playNote,720);button.textContent="♫ Nhạc mùa đông: Bật";button.setAttribute("aria-pressed","true");
-    }else{playing=false;window.clearInterval(timer);timer=null;if(audio&&audio.state==="running")await audio.suspend();button.textContent="♫ Nhạc mùa đông: Tắt";button.setAttribute("aria-pressed","false")}
-  }
-  button.addEventListener("click",()=>toggle().catch(()=>{button.textContent="♫ Không phát được nhạc"}));
+  button.addEventListener("click",()=>{if(playing)stop();else start();});
+  close.addEventListener("click",stop);
 })();
 
 function clearSession(){
@@ -857,8 +965,15 @@ if(token&&rewardState.pending.length)window.setTimeout(processRewardQueue,250);
   }
   window.addEventListener("pointermove",e=>{if(reduceMotion)return;const now=performance.now();if(now-lastPointer<48)return;lastPointer=now;addCursorSnow(e.clientX,e.clientY);startLoop();},{passive:true});
   function drawSnowflake(x,y,size,rotation,alpha){
-    ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.globalAlpha=alpha;ctx.strokeStyle="#fff";ctx.lineWidth=Math.max(.8,size*.22);ctx.lineCap="round";
-    for(let arm=0;arm<6;arm++){ctx.rotate(Math.PI/3);ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,-size);ctx.moveTo(0,-size*.58);ctx.lineTo(-size*.27,-size*.83);ctx.moveTo(0,-size*.58);ctx.lineTo(size*.27,-size*.83);ctx.stroke();}
+    // Delicate, translucent flakes: thin strokes, soft glow and no hard outlined badge.
+    ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.globalAlpha=alpha*.78;
+    ctx.strokeStyle="rgba(255,255,255,.72)";ctx.lineWidth=Math.max(.45,size*.105);ctx.lineCap="round";
+    ctx.shadowBlur=9;ctx.shadowColor="rgba(185,224,242,.72)";
+    for(let arm=0;arm<6;arm++){
+      ctx.rotate(Math.PI/3);ctx.beginPath();ctx.moveTo(0,-size*.12);ctx.lineTo(0,-size*.88);
+      ctx.moveTo(0,-size*.56);ctx.lineTo(-size*.19,-size*.76);
+      ctx.moveTo(0,-size*.56);ctx.lineTo(size*.19,-size*.76);ctx.stroke();
+    }
     ctx.restore();
   }
   function startLoop(){if(!raf)raf=requestAnimationFrame(draw)}
